@@ -1,0 +1,40 @@
+.layoutContainer {
+  display: flex;
+  .main {
+    flex-grow: 1;
+    transition: margin-left 0.4s ease; /* Agrega una transición suave */
+    .containerAccount {
+      display: flex;
+      justify-content: space-between;
+      background-color: #b79bff;
+      margin: 0 0 15px 0;
+      .title {
+        font-weight: bold;
+        font-size: 30px;
+        margin: 5px 0 5px 10px;
+      }
+      .btnAccount {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .btn {
+          color: #000;
+          margin-right: 20px;
+          &:hover {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            color: #fff;
+            text-decoration: none;
+            background-color: #341c78;
+            border-radius: 7px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    .children{
+      margin: 0 0 0 5px;
+    }
+  }
+}

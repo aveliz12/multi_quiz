@@ -15,21 +15,21 @@ const NewAccount = () => {
   //Validación del formulario
   const formik = useFormik({
     initialValues: {
-      nombre: "",
-      apellido: "",
-      correo: "",
+      name: "",
+      last_name: "",
+      email: "",
       user_name: "",
-      pass: "",
-      role: "User",
+      password: "",
+      role: "user",
     },
     validationSchema: Yup.object({
-      nombre: Yup.string().required("El nombre es requerido."),
-      apellido: Yup.string().required("El apellido es requerido."),
-      correo: Yup.string()
+      name: Yup.string().required("El nombre es requerido."),
+      last_name: Yup.string().required("El apellido es requerido."),
+      email: Yup.string()
         .email("El correo no es válido.")
         .required("El correo es requerido."),
       user_name: Yup.string().required("El nombre de usuario es requerido."),
-      pass: Yup.string()
+      password: Yup.string()
         .min(8, "La contraseña debe tener mínimo 8 caracteres.")
         .required("La contraseña es requerido."),
     }),
@@ -40,7 +40,7 @@ const NewAccount = () => {
 
   //Registrar
   const newAccount = (data) => {
-    createUserWithEmailAndPassword(auth, data.correo, data.pass)
+    createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredentials) => {
         const user = userCredentials.user;
         const db = getFirestore();
@@ -49,11 +49,11 @@ const NewAccount = () => {
         const usersCollection = collection(db, "users");
         const userDoc = doc(usersCollection, user.uid);
         setDoc(userDoc, {
-          nombre: data.nombre,
-          apellido: data.apellido,
+          name: data.name,
+          last_name: data.last_name,
           user_name: data.user_name,
-          correo: data.correo,
-          password: data.pass,
+          email: data.email,
+          password: data.password,
           role: data.role,
         });
 
@@ -86,52 +86,52 @@ const NewAccount = () => {
               <div className="input-group" style={{ marginBottom: "10px" }}>
                 <span className="input-group-text">Nombre</span>
                 <input
-                  id="nombre"
+                  id="name"
                   type="text"
                   aria-label="Nombre"
                   className="form-control"
-                  value={formik.values.nombre}
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
                 <span className="input-group-text">Apellido</span>
                 <input
-                  id="apellido"
+                  id="last_name"
                   type="text"
                   aria-label="Apellido"
                   className="form-control"
-                  value={formik.values.apellido}
+                  value={formik.values.last_name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
               </div>
-              {formik.errors.nombre && formik.touched.nombre ? (
+              {formik.errors.name && formik.touched.name ? (
                 <div className={loginStyle.errorStyle}>
                   <p className={loginStyle.titleErrorStyle}>Error</p>
-                  <p>{formik.errors.nombre}</p>
+                  <p>{formik.errors.name}</p>
                 </div>
-              ) : formik.errors.apellido && formik.touched.apellido ? (
+              ) : formik.errors.last_name && formik.touched.last_name ? (
                 <div className={loginStyle.errorStyle}>
                   <p className={loginStyle.titleErrorStyle}>Error</p>
-                  <p>{formik.errors.apellido}</p>
+                  <p>{formik.errors.last_name}</p>
                 </div>
               ) : null}
               <div className="input-group" style={{ marginBottom: "10px" }}>
                 <span className="input-group-text">Correo electrónico</span>
                 <input
-                  id="correo"
+                  id="email"
                   type="email"
                   aria-label="Correo electrónico"
                   className="form-control"
-                  value={formik.values.correo}
+                  value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
               </div>
-              {formik.touched.correo && formik.errors.correo ? (
+              {formik.touched.email && formik.errors.email ? (
                 <div className={loginStyle.errorStyle}>
                   <p className={loginStyle.titleErrorStyle}>Error</p>
-                  <p>{formik.errors.correo}</p>
+                  <p>{formik.errors.email}</p>
                 </div>
               ) : null}
               <div className="input-group" style={{ marginBottom: "10px" }}>
@@ -155,19 +155,19 @@ const NewAccount = () => {
               <div className="input-group" style={{ marginBottom: "10px" }}>
                 <span className="input-group-text">Contraseña</span>
                 <input
-                  id="pass"
+                  id="password"
                   type="password"
                   aria-label="Contraseña"
                   className="form-control"
-                  value={formik.values.pass}
+                  value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
               </div>
-              {formik.touched.pass && formik.errors.pass ? (
+              {formik.touched.password && formik.errors.password ? (
                 <div className={loginStyle.errorStyle}>
                   <p className={loginStyle.titleErrorStyle}>Error</p>
-                  <p>{formik.errors.pass}</p>
+                  <p>{formik.errors.password}</p>
                 </div>
               ) : null}
               <div

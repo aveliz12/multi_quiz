@@ -3,8 +3,10 @@ import React from "react";
 import SideBar from "./SideBar";
 import { useRouter } from "next/router";
 import login from "../styles/login.module.scss";
+import styleLayout from "../styles/layout.module.scss";
+import Link from "next/link";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, title }) => {
   const router = useRouter();
 
   return (
@@ -22,9 +24,22 @@ const Layout = ({ children }) => {
       {router.pathname === "/login" || router.pathname === "/newAccount" ? (
         <div className={login.container_login}>{children}</div>
       ) : (
-        <div>
+        <div className={styleLayout.layoutContainer}>
           <SideBar />
-          <main>{children}</main>
+          <main className={styleLayout.main}>
+            <div className={styleLayout.containerAccount}>
+              <div className={styleLayout.title}>{title}</div>
+              <div className={styleLayout.btnAccount}>
+                <Link href="login" className={styleLayout.btn}>
+                  Iniciar Sesión
+                </Link>
+                <Link href="newAccount" className={styleLayout.btn}>
+                  Crear Cuenta
+                </Link>
+              </div>
+            </div>
+            <div className={styleLayout.children}>{children}</div>
+          </main>
         </div>
       )}
     </>
