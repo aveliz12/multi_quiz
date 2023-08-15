@@ -1,13 +1,47 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import { useRouter } from "next/router";
 import login from "../styles/login.module.scss";
 import styleLayout from "../styles/layout.module.scss";
 import Link from "next/link";
-
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+import * as FaIcons from "react-icons/fa";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 const Layout = ({ children, title }) => {
   const router = useRouter();
+
+  const [confirm, setConfirm] = useState(false);
+
+  //EXTRAER LOS USUARIOS POR SU ROL
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      // Redirige a la página de inicio de sesión u otra página
+      router.push("/");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+  const authentication = () => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setConfirm(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    authentication();
+  }, []);
 
   return (
     <>
@@ -18,7 +52,7 @@ const Layout = ({ children, title }) => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></link>
       </Head>
       {router.pathname === "/login" || router.pathname === "/newAccount" ? (
@@ -29,14 +63,22 @@ const Layout = ({ children, title }) => {
           <main className={styleLayout.main}>
             <div className={styleLayout.containerAccount}>
               <div className={styleLayout.title}>{title}</div>
-              <div className={styleLayout.btnAccount}>
-                <Link href="login" className={styleLayout.btn}>
-                  Iniciar Sesión
-                </Link>
-                <Link href="newAccount" className={styleLayout.btn}>
-                  Crear Cuenta
-                </Link>
-              </div>
+              {confirm ? (
+                <button className={styleLayout.li} onClick={handleSignOut}>
+                  <i className={styleLayout.i}>
+                    <FaIcons.FaSignOutAlt />
+                  </i>
+                </button>
+              ) : (
+                <div className={styleLayout.btnAccount}>
+                  <Link href="login" className={styleLayout.btn}>
+                    Iniciar Sesión
+                  </Link>
+                  <Link href="newAccount" className={styleLayout.btn}>
+                    Crear Cuenta
+                  </Link>
+                </div>
+              )}
             </div>
             <div className={styleLayout.children}>{children}</div>
           </main>

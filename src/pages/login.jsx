@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import loginStyle from "../styles/login.module.scss";
@@ -24,20 +24,28 @@ const Login = () => {
       pass: Yup.string().required("La contraseña es obligatoria."),
     }),
     onSubmit: (values) => {
-      signInWithEmailAndPassword(auth, values.email, values.pass)
-        .then(async (res) => {
-          router.push("/");
-        })
-        .catch((err) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Credenciales incorrectas",
-          });
+      try {
+        signInWithEmailAndPassword(auth, values.email, values.pass).then(
+          async (resp) => {
+            if (resp.user) {
+              const userUid = resp.user.uid;
+
+              router.push({
+                pathname: `/userId/[userUid]`,
+                query: { userUid },
+              });
+            }
+          }
+        );
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Credenciales incorrectas",
         });
+      }
     },
   });
-
   return (
     <div className={loginStyle.allPage}>
       <Layout>

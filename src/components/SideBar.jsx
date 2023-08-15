@@ -4,7 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import sideBarStyle from "../styles/sideBar.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
-const SideBar = () => {
+const SideBar = ({ userRole }) => {
   const router = useRouter();
 
   return (
@@ -19,12 +19,15 @@ const SideBar = () => {
           />
         </div>
         <ul className={sideBarStyle.nav_links}>
-          <Link href="/" className={sideBarStyle.li}>
-            <i className={sideBarStyle.i}>
-              <FaIcons.FaUserFriends />
-            </i>
-            <span className={sideBarStyle.span}>Usuarios</span>
-          </Link>
+          {userRole === "admin" && (
+            <Link href="/" className={sideBarStyle.li}>
+              <i className={sideBarStyle.i}>
+                <FaIcons.FaUserFriends />
+              </i>
+              <span className={sideBarStyle.span}>Usuarios</span>
+            </Link>
+          )}
+
           <Link href="/categories" className={sideBarStyle.li}>
             <i className={sideBarStyle.i}>
               <FaIcons.FaClipboardList />
@@ -37,7 +40,6 @@ const SideBar = () => {
             </i>
             <span className={sideBarStyle.span}>Preguntas</span>
           </Link>
-          
         </ul>
       </nav>
     </>

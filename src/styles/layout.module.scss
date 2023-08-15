@@ -32,8 +32,17 @@
           }
         }
       }
+      .li {
+        background-color: #b79bff;
+        border: none;
+        font-size: 30px;
+        margin: 0 10px 0 0;
+        .i {
+          color: #000;
+        }
+      }
     }
-    .children{
+    .children {
       margin: 0 0 0 5px;
     }
   }
