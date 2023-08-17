@@ -1,7 +1,44 @@
-.table {
-  margin: 20px 30px 0 0;
-  .btns{
+.h1 {
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.newAccount {
+  margin: 10px 0 0 30px;
+  .newAccountBtn {
     display: flex;
     justify-content: center;
+    align-items: center;
+    color: #000;
+    font-weight: bold;
+    border-radius: 5px;
+    height: 40px;
+    width: 200px;
+    background-color: #b79bff;
+    text-decoration: none;
+    &:hover {
+      background-color: #341c78;
+      color: #fff;
+    }
+
+    .i {
+      margin: 0 10px 0 0;
+    }
+  }
+}
+
+.table {
+  margin: 20px 30px 0 0;
+  .btns {
+    display: flex;
+    justify-content: center;
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 10px 0 0;
+      font-weight: bold;
+    }
   }
 }

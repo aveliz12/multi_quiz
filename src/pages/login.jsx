@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const Login = () => {
   const router = useRouter();
@@ -25,24 +26,35 @@ const Login = () => {
     }),
     onSubmit: (values) => {
       try {
-        signInWithEmailAndPassword(auth, values.email, values.pass).then(
-          async (resp) => {
+        signInWithEmailAndPassword(auth, values.email, values.pass)
+          .then(async (resp) => {
             if (resp.user) {
               const userUid = resp.user.uid;
 
-              router.push({
-                pathname: `/userId/[userUid]`,
-                query: { userUid },
-              });
+              const db = getFirestore();
+              const userDocRef = doc(db, "users", userUid);
+              const userSnapShot = await getDoc(userDocRef);
+
+              if (userSnapShot.exists()) {
+                const userData = userSnapShot.data();
+                userData.id = userUid;
+                localStorage.setItem("userData", JSON.stringify(userData));
+
+                router.push("/user");
+              } else {
+                console.log("El usuario no existe.");
+              }
             }
-          }
-        );
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Credenciales incorrectas",
+            });
+          });
       } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Credenciales incorrectas",
-        });
+        console.log("Error al ingresar. ", error);
       }
     },
   });

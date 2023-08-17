@@ -70,7 +70,7 @@ const NewAccount = () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Error al crear usuario",
+          text: "Este correo ya está en uso.",
         });
         console.log(err);
       });

@@ -4,7 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import sideBarStyle from "../styles/sideBar.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
-const SideBar = ({ userRole }) => {
+const SideBar = () => {
   const router = useRouter();
 
   return (
@@ -19,14 +19,12 @@ const SideBar = ({ userRole }) => {
           />
         </div>
         <ul className={sideBarStyle.nav_links}>
-          {userRole === "admin" && (
-            <Link href="/" className={sideBarStyle.li}>
-              <i className={sideBarStyle.i}>
-                <FaIcons.FaUserFriends />
-              </i>
-              <span className={sideBarStyle.span}>Usuarios</span>
-            </Link>
-          )}
+          <Link href="/user" className={sideBarStyle.li}>
+            <i className={sideBarStyle.i}>
+              <FaIcons.FaUserFriends />
+            </i>
+            <span className={sideBarStyle.span}>Usuarios</span>
+          </Link>
 
           <Link href="/categories" className={sideBarStyle.li}>
             <i className={sideBarStyle.i}>
