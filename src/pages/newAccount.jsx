@@ -64,7 +64,7 @@ const NewAccount = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        router.push("/login");
+        router.push("/user");
       })
       .catch((err) => {
         Swal.fire({
@@ -179,10 +179,10 @@ const NewAccount = () => {
               >
                 <input
                   type="submit"
-                  className="btn btn-primary"
+                  className={loginStyle.btnNewAccount}
                   value="CREAR CUENTA"
                 />
-                <a href="login">Ya tengo una cuenta</a>
+                <a href="user" className={loginStyle.link}>REGRESAR</a>
               </div>
             </form>
           </div>

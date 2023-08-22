@@ -42,3 +42,41 @@
     }
   }
 }
+
+.form {
+  margin: 0 350px 0 350px;
+  .titleUpdate {
+    display: flex;
+    justify-content: center;
+  }
+  .link {
+    color: #341c78;
+    &:hover {
+      color: #000;
+      text-decoration: none;
+    }
+  }
+  .btnNewAccount {
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    height: 40px;
+    background-color: #b79bff;
+    font-weight: bold;
+    &:hover {
+      font-weight: bold;
+      background-color: #341c78;
+      color: #fff;
+    }
+  }
+  .errorStyle {
+    border-radius: 4px;
+    border-left: solid rgb(239 68 68);
+    background-color: rgb(254 226 226);
+    color: rgb(185 28 28);
+    margin-bottom: 5px;
+    .titleErrorStyle {
+      font-weight: bold;
+    }
+  }
+}

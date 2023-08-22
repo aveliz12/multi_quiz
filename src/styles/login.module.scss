@@ -31,3 +31,23 @@
     }
   }
 }
+
+.btnNewAccount {
+  border-radius: 5px;
+  border: none;
+  width: auto;
+  height: 40px;
+  background-color: #b79bff;
+  &:hover {
+    font-weight: bold;
+    background-color: #341c78;
+    color: #fff;
+  }
+}
+.link {
+  color: #341c78;
+  &:hover {
+    color: #000;
+    text-decoration: none;
+  }
+}

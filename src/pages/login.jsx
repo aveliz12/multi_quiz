@@ -127,7 +127,6 @@ const Login = () => {
                     className="btn btn-primary"
                     value="INICIAR SESIÓN"
                   />
-                  <a href="newAccount">Crear nueva cuenta</a>
                 </div>
               </form>
             </div>
