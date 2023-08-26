@@ -21,7 +21,7 @@ const SideBar = () => {
         <ul className={sideBarStyle.nav_links}>
           <Link href="/user" className={sideBarStyle.li}>
             <i className={sideBarStyle.i}>
-              <FaIcons.FaUserFriends />
+              <FaIcons.FaUsers />
             </i>
             <span className={sideBarStyle.span}>Usuarios</span>
           </Link>
@@ -32,11 +32,11 @@ const SideBar = () => {
             </i>
             <span className={sideBarStyle.span}>Categorias</span>
           </Link>
-          <Link href="/questions" className={sideBarStyle.li}>
+          <Link href="/profile" className={sideBarStyle.li}>
             <i className={sideBarStyle.i}>
-              <FaIcons.FaQuestion />
+              <FaIcons.FaUserCircle />
             </i>
-            <span className={sideBarStyle.span}>Preguntas</span>
+            <span className={sideBarStyle.span}>Perfil</span>
           </Link>
         </ul>
       </nav>

@@ -1,3 +1,27 @@
+.headContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px 0 5px;
+  .btnAdd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px 0 0;
+    color: #fff;
+    background-color: #6667ab;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #341c78;
+      color: #fff;
+      font-weight: bold;
+    }
+  }
+}
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Distribuir en 3 columnas */
@@ -5,8 +29,8 @@
   padding: 5px 0 0 20px;
   .card {
     position: relative;
-    width: 200px;
-    height: 300px;
+    width: 180px;
+    height: 250px;
     padding: 20px 0 0 0;
     .card_landing {
       position: relative;
@@ -34,6 +58,8 @@
         }
       }
       .img {
+        display: flex;
+        justify-content: center;
         padding: 50px 0 0 0;
         position: absolute;
       }
@@ -41,7 +67,7 @@
 
     .card_info {
       position: absolute;
-      width: 90%;
+      width: 100%;
       height: 80%;
       left: 0;
       bottom: 0;
@@ -53,18 +79,6 @@
       box-shadow: 0 5px 10px #000;
       transition: 0.5s;
       opacity: 0;
-      .btnEdit {
-        color: #000;
-        font-weight: bold;
-        background: #6667ab;
-        width: 100%;
-        border-radius: 3px;
-        border: none;
-        &:hover {
-          background-color: #341c78;
-          color: #fff;
-        }
-      }
     }
 
     &:hover .card_info {
@@ -73,7 +87,30 @@
     }
     .head {
       padding: 5px 0;
-
+      .btnEditDetail {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        font-size: 20px;
+        .btnDetail {
+          background-color: #6667ab;
+          border-radius: 3px;
+          border: none;
+          &:hover {
+            background-color: #341c78;
+            color: #fff;
+          }
+        }
+        .btnEdit {
+          background: #03ff0f;
+          border-radius: 3px;
+          border: none;
+          &:hover {
+            background-color: #1b8500;
+            color: #fff;
+          }
+        }
+      }
       .description {
         display: flex;
         gap: 10px;
