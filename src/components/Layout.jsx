@@ -31,18 +31,7 @@ const Layout = ({ children, title }) => {
       console.error("Error al cerrar sesión:", error);
     }
   };
-  // const authentication = () => {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       setConfirm(true);
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   authentication();
-  // }, []);
-
+  
   return (
     <>
       <Head>

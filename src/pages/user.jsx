@@ -15,12 +15,16 @@ import styleUsers from "../styles/users.module.scss";
 import * as FaIcons from "react-icons/fa";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import WithPrivateRoute from "../components/WithPrivateRoute";
+import { useUser } from "../components/UserContext";
 
 const User = () => {
-  const [user, setUser] = useState([]);
+  const { user } = useUser();
+  const [usr, setUsr] = useState({});
   const [users, setUsers] = useState([]);
   let index = 0;
   const router = useRouter();
+
   const getUsers = async () => {
     const db = getFirestore();
     const userCollectionRef = collection(db, "users");
@@ -31,7 +35,8 @@ const User = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      setUsers(userData);
+      const filterData = userData.filter((usr) => usr.id !== user?.id);
+      setUsers(filterData);
     } catch (err) {
       console.log(err);
     }
@@ -69,7 +74,7 @@ const User = () => {
       text: "No podrás volver atrás!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#6667AB",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, elimínalo!",
     }).then(async (result) => {
@@ -82,18 +87,14 @@ const User = () => {
   };
 
   useEffect(() => {
-    const storeUserData = localStorage.getItem("userData");
-    const userData = storeUserData ? JSON.parse(storeUserData) : null;
-
-    setUser(userData);
-
-    if (userData) {
-      getUsers();
-    }
-  }, []);
+    const dataStorage = localStorage.getItem("userData");
+    const parseUserData = JSON.parse(dataStorage);
+    setUsr(parseUserData);
+    getUsers();
+  }, [user]);
 
   return (
-    <Layout title={`Bienvenido ${user.name} ${user.last_name}`}>
+    <Layout title={`Bienvenido ${usr?.name} ${usr?.last_name}`}>
       <div className={styleUsers.text_box}>
         <h1 className={styleUsers.h1}>USUARIOS</h1>
       </div>
@@ -157,5 +158,5 @@ const User = () => {
     </Layout>
   );
 };
-
+User.Auth = WithPrivateRoute;
 export default User;

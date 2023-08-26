@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import loginStyle from "../styles/login.module.scss";
+import WithPrivateRoute from "../components/WithPrivateRoute";
 
 const NewAccount = () => {
   const router = useRouter();
@@ -182,7 +183,9 @@ const NewAccount = () => {
                   className={loginStyle.btnNewAccount}
                   value="CREAR CUENTA"
                 />
-                <a href="user" className={loginStyle.link}>REGRESAR</a>
+                <a href="user" className={loginStyle.link}>
+                  REGRESAR
+                </a>
               </div>
             </form>
           </div>
@@ -191,5 +194,6 @@ const NewAccount = () => {
     </div>
   );
 };
+NewAccount.Auth = WithPrivateRoute;
 
 export default NewAccount;
