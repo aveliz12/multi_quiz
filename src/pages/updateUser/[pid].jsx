@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 const UpdateUser = () => {
   const [user, setUser] = useState([]);
-  const [userUpdate, setuserUpdate] = useState([]);
+  const [userUpdate, setuserUpdate] = useState({});
   //Obtener el id del usuario
   const router = useRouter();
   const {
@@ -55,24 +55,27 @@ const UpdateUser = () => {
     const userData = storeUserData ? JSON.parse(storeUserData) : null;
 
     setUser(userData);
-    const getDataUserUpdate = async () => {
-      if (pid) {
-        const db = getFirestore();
-        const userRef = doc(db, "users", pid);
 
-        try {
-          const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            setuserUpdate(userDoc.data());
-          } else {
-            console.log("Usuario no encontrado.");
+    if (pid !== undefined) {
+      const getDataUserUpdate = async () => {
+        if (pid) {
+          const db = getFirestore();
+          const userRef = doc(db, "users", pid);
+
+          try {
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+              setuserUpdate(userDoc.data());
+            } else {
+              console.log("Usuario no encontrado.");
+            }
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
-      }
-    };
-    getDataUserUpdate();
+      };
+      getDataUserUpdate();
+    }
   }, [pid]);
 
   return (

@@ -4,7 +4,6 @@ import { useUser } from "@/components/UserContext";
 import styleNewCat from "../styles/categories.module.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import loginStyle from "../styles/login.module.scss";
 
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";

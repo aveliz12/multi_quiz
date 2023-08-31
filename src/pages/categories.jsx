@@ -15,9 +15,10 @@ import * as FaIcons from "react-icons/fa";
 import { useUser } from "../components/UserContext";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import { useRouter } from "next/router";
 const Categories = () => {
   const { user } = useUser();
-
+  const router = useRouter();
   const [categorie, setCategorie] = useState([]);
 
   const getCategories = async () => {
@@ -66,6 +67,23 @@ const Categories = () => {
           "success"
         );
       }
+    });
+  };
+
+  //Questions
+  const showQuestions = (id) => {
+    router.push({
+      pathname: "/questions",
+      query: { id },
+    });
+  };
+
+  //Actualizar Categoría
+  const updateCategorie = (id) => {
+    console.log("INGRESANDO....");
+    router.push({
+      pathname: "/updateCategorie/[id]",
+      query: { id },
     });
   };
 
@@ -119,10 +137,16 @@ const Categories = () => {
                     </p>
                   </div>
                   <div className={styleCategories.btnEditDetail}>
-                    <button className={styleCategories.btnEdit}>
+                    <button
+                      className={styleCategories.btnEdit}
+                      onClick={() => updateCategorie(category.id)}
+                    >
                       <FaIcons.FaEdit />
                     </button>
-                    <button className={styleCategories.btnDetail}>
+                    <button
+                      className={styleCategories.btnDetail}
+                      onClick={() => showQuestions(category.id)}
+                    >
                       <FaIcons.FaQuestion />
                     </button>
                   </div>
