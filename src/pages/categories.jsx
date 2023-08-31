@@ -6,7 +6,6 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase";
 import Image from "next/image";
@@ -16,7 +15,6 @@ import * as FaIcons from "react-icons/fa";
 import { useUser } from "../components/UserContext";
 import Swal from "sweetalert2";
 import Link from "next/link";
-
 const Categories = () => {
   const { user } = useUser();
 
@@ -43,7 +41,7 @@ const Categories = () => {
     try {
       const db = getFirestore();
       const catRef = doc(db, "categories", idCat);
-      await deleteDoc(userRef);
+      await deleteDoc(catRef);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +83,7 @@ const Categories = () => {
         >
           Categorias
         </h5>
-        <Link href="" className={styleCategories.btnAdd}>
+        <Link href="newCategorie" className={styleCategories.btnAdd}>
           <FaIcons.FaPlus style={{ marginRight: "8px", marginLeft: "8px" }} />
           CREAR CATEGORIA
         </Link>
@@ -121,9 +119,11 @@ const Categories = () => {
                     </p>
                   </div>
                   <div className={styleCategories.btnEditDetail}>
-                    <button className={styleCategories.btnEdit}><FaIcons.FaEdit /></button>
+                    <button className={styleCategories.btnEdit}>
+                      <FaIcons.FaEdit />
+                    </button>
                     <button className={styleCategories.btnDetail}>
-                    <FaIcons.FaQuestion />
+                      <FaIcons.FaQuestion />
                     </button>
                   </div>
                 </div>
