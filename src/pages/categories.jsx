@@ -133,7 +133,7 @@ const Categories = () => {
                 <div className={styleCategories.head}>
                   <div className={styleCategories.content}>
                     <p className={styleCategories.description}>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      {category.description}
                     </p>
                   </div>
                   <div className={styleCategories.btnEditDetail}>
