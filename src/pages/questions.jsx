@@ -14,11 +14,22 @@ import {
 } from "firebase/firestore";
 import Image from "next/image";
 import styleQuestions from "../styles/questions.module.scss";
+import Modal from "../components/Modal";
 const Questions = () => {
   const [quest, setQuestion] = useState([]);
   const [categorie, setCategorie] = useState({});
   const { user } = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Función para abrir el modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   //Obtener id de categoria
   const router = useRouter();
   const { query: pid } = router;
@@ -85,17 +96,29 @@ const Questions = () => {
           decoding="async"
         />
       </div>
-      {quest.map((data) => (
+      <div className={styleQuestions.modal}>
+        {/* Renderiza el componente Modal */}
+        <Modal isOpen={isModalOpen} header="Ingreso de nuevas preguntas" footer="GUARDAR">
+          <p>Nueva preguntaaaaaaaaaaaas</p>
+        </Modal>
+      </div>
+      {quest.map((data, index) => (
         <ol key={data.idQ}>
-          <li className={styleQuestions.questionsStyle}>{data.question}</li>
+          <span className={styleQuestions.questionsStyle}>
+            {index + 1}. {data.question}
+          </span>
           {data.options.map((dataOptions, index) => {
             let equal = false;
-            if (dataOptions === data.answer) {
+            if (dataOptions.toLowerCase() === data.answer.toLowerCase()) {
               equal = true;
             }
             return (
               <ul key={index}>
-                <li className={equal ? styleQuestions.greenBackground : ""}>
+                <li
+                  className={`${equal ? styleQuestions.greenBackground : ""} ${
+                    styleQuestions.optionItem
+                  }`}
+                >
                   {dataOptions}
                 </li>
               </ul>

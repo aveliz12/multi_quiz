@@ -1,7 +1,7 @@
 .nav {
   font-family: sans-serif;
   width: 80px;
-  height: 100vh; /* Establecer la altura al 100% de la ventana */
+  height: 100vh;
   margin: 0; /* Eliminar margen */
   padding: 0; /* Eliminar relleno */
   background-color: #6667AB;
@@ -32,7 +32,7 @@
     }
 
     .nav_links {
-      margin-top: 90px;
+      margin-top: 110px;
 
       .li {
         color: inherit;

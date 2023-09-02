@@ -3,10 +3,21 @@
   align-items: center;
   padding: 5px 10px 20px 10px;
 }
-.questionsStyle {
-  font-size: 20px;
+.questionsStyle{
   font-weight: bold;
-  .greenBackground {
-    background-color: #00ff00;
-  }
+  font-size: 15px;
+}
+
+.greenBackground {
+  
+  display: inline;
+  font-weight: bold;
+  background-color: green;
+  color: white; 
+  padding: 2px 5px; 
+  border-radius: 3px;
+}
+
+.modal{
+  padding: 5px 10px 20px 10px;
 }
