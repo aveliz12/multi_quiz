@@ -15,6 +15,11 @@ import {
 import Image from "next/image";
 import styleQuestions from "../styles/questions.module.scss";
 import Modal from "../components/Modal";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Swal from "sweetalert2";
+import * as FaIcons from "react-icons/fa";
+
 const Questions = () => {
   const [quest, setQuestion] = useState([]);
   const [categorie, setCategorie] = useState({});
@@ -98,14 +103,102 @@ const Questions = () => {
       </div>
       <div className={styleQuestions.modal}>
         {/* Renderiza el componente Modal */}
-        <Modal isOpen={isModalOpen} header="Ingreso de nuevas preguntas" footer="GUARDAR">
-          <p>Nueva preguntaaaaaaaaaaaas</p>
+        <Modal
+          isOpen={isModalOpen}
+          header="Ingreso de nuevas preguntas"
+          footer="GUARDAR"
+          actionSave=""
+        >
+          <form>
+            <div>
+              <span>Pregunta: </span>
+              <input
+                type="text"
+                id="question"
+                aria-label="Pregunta"
+                className="form-control"
+                placeholder="Ingrese la pregunta."
+              />
+            </div>
+            <div>
+              <span>Opciones: </span>
+              <div>
+                <input
+                  type="text"
+                  id="options"
+                  aria-label="Opciones"
+                  className="form-control"
+                  placeholder="Ingrese la opción 1."
+                />
+                <input
+                  type="text"
+                  id="options"
+                  aria-label="Opciones"
+                  className="form-control"
+                  placeholder="Ingrese la opción 2."
+                />
+                <input
+                  type="text"
+                  id="options"
+                  aria-label="Opciones"
+                  className="form-control"
+                  placeholder="Ingrese la opción 3."
+                />
+                <input
+                  type="text"
+                  id="options"
+                  aria-label="Opciones"
+                  className="form-control"
+                  placeholder="Ingrese la opción 4."
+                />
+              </div>
+            </div>
+            <div>
+              <span>Respuesta correcta: </span>
+              <input
+                type="text"
+                id="answer"
+                aria-label="Respuesta"
+                className="form-control"
+                placeholder="Ingrese la respuesta correcta."
+              />
+            </div>
+            
+            <div>
+              <span>Pista: </span>
+              <input
+                type="text"
+                id="hint"
+                aria-label="Pista"
+                className="form-control"
+                placeholder="Ingrese la pista."
+              />
+            </div>
+            <div>
+              <span>Imágen: </span>
+              <input
+                type="text"
+                id="image"
+                aria-label="Imagen"
+                className="form-control"
+                placeholder="Ingrese la imagen."
+              />
+            </div>
+          </form>
         </Modal>
       </div>
       {quest.map((data, index) => (
         <ol key={data.idQ}>
           <span className={styleQuestions.questionsStyle}>
             {index + 1}. {data.question}
+            <button
+              className={styleQuestions.btnHint}
+              onClick={() => {
+                Swal.fire(`${data.hint}`);
+              }}
+            >
+              <FaIcons.FaLightbulb className={styleQuestions.iconHint} />
+            </button>
           </span>
           {data.options.map((dataOptions, index) => {
             let equal = false;

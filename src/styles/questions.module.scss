@@ -3,21 +3,33 @@
   align-items: center;
   padding: 5px 10px 20px 10px;
 }
-.questionsStyle{
+.questionsStyle {
   font-weight: bold;
   font-size: 15px;
+  .btnHint {
+    border: none;
+    background: none;
+    .iconHint {
+      height: 20px;
+      color: #000;
+      &:hover {
+        border-radius: 2px;
+        background-color: #000;
+        color: #fbff00;
+      }
+    }
+  }
 }
 
 .greenBackground {
-  
   display: inline;
   font-weight: bold;
   background-color: green;
-  color: white; 
-  padding: 2px 5px; 
+  color: white;
+  padding: 2px 5px;
   border-radius: 3px;
 }
 
-.modal{
+.modal {
   padding: 5px 10px 20px 10px;
 }

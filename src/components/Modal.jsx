@@ -2,7 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import * as FaIcons from "react-icons/fa";
 import styleModal from "../styles/modal.module.scss";
-function App({ header, children, footer }) {
+function App({ header, children, footer, actionSave }) {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -24,10 +24,12 @@ function App({ header, children, footer }) {
         <div
           className="modal fade show"
           tabIndex="-1"
+          aria-labelledby="miModalLabel"
+          aria-hidden="true"
           role="dialog"
           style={{ display: "block" }}
         >
-          <div className="modal-dialog" role="document">
+          <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">{header}</h5>
@@ -37,9 +39,18 @@ function App({ header, children, footer }) {
                   onClick={closeModal}
                 ></button>
               </div>
-              <div className="modal-body">{children}</div>
+              <div
+                className="modal-body"
+                style={{ maxHeight: "500px", overflowY: "auto" }}
+              >
+                {children}
+              </div>
               <div className="modal-footer">
-                <Link href="" className={styleModal.btnAdd} onClick={openModal}>
+                <Link
+                  href=""
+                  className={styleModal.btnAdd}
+                  onClick={actionSave}
+                >
                   <FaIcons.FaSave
                     style={{ marginRight: "8px", marginLeft: "8px" }}
                   />
