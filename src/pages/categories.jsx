@@ -80,7 +80,6 @@ const Categories = () => {
 
   //Actualizar Categoría
   const updateCategorie = (id) => {
-    console.log("INGRESANDO....");
     router.push({
       pathname: "/updateCategorie/[id]",
       query: { id },

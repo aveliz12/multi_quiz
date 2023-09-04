@@ -3,6 +3,25 @@
   align-items: center;
   padding: 5px 10px 20px 10px;
 }
+.btnAdd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px 0 0;
+  color: #fff;
+  background-color: #6667ab;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 20%;
+  text-decoration: none;
+  font-weight: bold;
+  &:hover {
+    background-color: #341c78;
+    color: #fff;
+    font-weight: bold;
+  }
+}
 .questionsStyle {
   font-weight: bold;
   font-size: 15px;
@@ -11,10 +30,10 @@
     background: none;
     .iconHint {
       height: 20px;
-      color: #000;
+      color: #6667ab;
       &:hover {
         border-radius: 2px;
-        background-color: #000;
+        background-color: #6667ab;
         color: #fbff00;
       }
     }
@@ -30,6 +49,33 @@
   border-radius: 3px;
 }
 
-.modal {
-  padding: 5px 10px 20px 10px;
+.errorStyle {
+  display: flex;
+  width: 58%;
+  border-radius: 4px;
+  border-left: solid rgb(239 68 68);
+  background-color: rgb(254 226 226);
+  color: rgb(185 28 28);
+  padding: 2px;
+  margin-bottom: 5px;
+  .titleErrorStyle {
+    font-weight: bold;
+    padding: 0 5px 0 0;
+  }
+}
+.inputStyle {
+  padding: 3px;
+  .span {
+    font-weight: bold;
+  }
+}
+.btnSave {
+  background-color: #6667ab;
+  font-weight: bold;
+  border-radius: 3px;
+  border: none;
+  &:hover {
+    background-color: #341c78;
+    color: #fff;
+  }
 }

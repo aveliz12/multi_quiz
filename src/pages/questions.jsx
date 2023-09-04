@@ -4,6 +4,7 @@ import WithPrivateRoute from "../components/WithPrivateRoute";
 import { useUser } from "../components/UserContext";
 import { useRouter } from "next/router";
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -14,32 +15,19 @@ import {
 } from "firebase/firestore";
 import Image from "next/image";
 import styleQuestions from "../styles/questions.module.scss";
-import Modal from "../components/Modal";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import Swal from "sweetalert2";
 import * as FaIcons from "react-icons/fa";
+import Link from "next/link";
 
 const Questions = () => {
   const [quest, setQuestion] = useState([]);
   const [categorie, setCategorie] = useState({});
   const { user } = useUser();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Función para abrir el modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Función para cerrar el modal
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
   //Obtener id de categoria
   const router = useRouter();
   const { query: pid } = router;
   const { id } = pid;
-
   //OBTENER CATEGORIA
   const getCategorie = async () => {
     const db = getFirestore();
@@ -76,6 +64,14 @@ const Questions = () => {
       console.log(error);
     }
   };
+
+  const sendIdCategorie = () => {
+    router.push({
+      pathname: "/newQuestion",
+      query: { id },
+    });
+  };
+
   useEffect(() => {
     if (id) {
       getQuestioByCategorie();
@@ -101,91 +97,11 @@ const Questions = () => {
           decoding="async"
         />
       </div>
-      <div className={styleQuestions.modal}>
-        {/* Renderiza el componente Modal */}
-        <Modal
-          isOpen={isModalOpen}
-          header="Ingreso de nuevas preguntas"
-          footer="GUARDAR"
-          actionSave=""
-        >
-          <form>
-            <div>
-              <span>Pregunta: </span>
-              <input
-                type="text"
-                id="question"
-                aria-label="Pregunta"
-                className="form-control"
-                placeholder="Ingrese la pregunta."
-              />
-            </div>
-            <div>
-              <span>Opciones: </span>
-              <div>
-                <input
-                  type="text"
-                  id="options"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 1."
-                />
-                <input
-                  type="text"
-                  id="options"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 2."
-                />
-                <input
-                  type="text"
-                  id="options"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 3."
-                />
-                <input
-                  type="text"
-                  id="options"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 4."
-                />
-              </div>
-            </div>
-            <div>
-              <span>Respuesta correcta: </span>
-              <input
-                type="text"
-                id="answer"
-                aria-label="Respuesta"
-                className="form-control"
-                placeholder="Ingrese la respuesta correcta."
-              />
-            </div>
-            
-            <div>
-              <span>Pista: </span>
-              <input
-                type="text"
-                id="hint"
-                aria-label="Pista"
-                className="form-control"
-                placeholder="Ingrese la pista."
-              />
-            </div>
-            <div>
-              <span>Imágen: </span>
-              <input
-                type="text"
-                id="image"
-                aria-label="Imagen"
-                className="form-control"
-                placeholder="Ingrese la imagen."
-              />
-            </div>
-          </form>
-        </Modal>
+      <div style={{ padding: "0 0 10px 15px" }}>
+        <Link href="/newQuestion" className={styleQuestions.btnAdd} onClick={sendIdCategorie}>
+          <FaIcons.FaPlus style={{ marginRight: "8px", marginLeft: "8px" }} />
+          CREAR PREGUNTAS
+        </Link>
       </div>
       {quest.map((data, index) => (
         <ol key={data.idQ}>

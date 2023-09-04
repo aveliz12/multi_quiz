@@ -50,7 +50,7 @@ const NewCategorie = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Este correo ya está en uso.",
+        text: "Error al crear categoría.",
       });
     }
   };
