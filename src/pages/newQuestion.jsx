@@ -11,14 +11,10 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useUser } from "@/components/UserContext";
 
 const NewQuestion = () => {
-  const {user} = useUser();
+  const { user } = useUser();
+  const { categoryId } = useUser();
+
   const router = useRouter();
-  //Obtener el id de la categoria
-  const {
-    query: { id },
-  } = router;
-  const idCategorie = id;
-  //Nueva pregunta
 
   const newQuestion = async (question) => {
     try {
@@ -48,20 +44,20 @@ const NewQuestion = () => {
   const formik = useFormik({
     initialValues: {
       answer: "",
-      category_ref: `/categories/${idCategorie}`,
+      category_ref: `/categories/${categoryId}`,
       hint: "",
       image: "",
-      options: {
-        0: "",
-        1: "",
-        2: "",
-        3: "",
-      },
+      options: { 0: "", 1: "", 2: "", 3: "" },
       question: "",
     },
     validationSchema: Yup.object({
       question: Yup.string().required("La pregunta es requerida."),
-      options: Yup.array().required("La opción es requerida."),
+      options: Yup.object().shape({
+        0: Yup.string().required("La primera opción es requerida."),
+        1: Yup.string().required("La segunda opción es requerida."),
+        2: Yup.string().required("La tercera opción es requerida."),
+        3: Yup.string().required("La cuarta opción es requerida."),
+      }),
       answer: Yup.string().required("La respuesta es requerida."),
       hint: Yup.string().required("La pista es requerida."),
       image: Yup.string()
@@ -69,7 +65,7 @@ const NewQuestion = () => {
         .required("El enlace de la imagen es requerido."),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      newQuestion(values);
     },
   });
   return (
@@ -85,10 +81,7 @@ const NewQuestion = () => {
           Nueva Categoria
         </h5>
         <form onSubmit={formik.handleSubmit}>
-          <div
-            className="modal-body"
-            style={{ maxHeight: "500px", overflowY: "auto" }}
-          >
+          <div style={{ maxHeight: "500px", overflowY: "auto" }}>
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Pregunta: </span>
               <input
@@ -102,6 +95,12 @@ const NewQuestion = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
+            {formik.touched.question && formik.errors.question ? (
+              <div className={styleQuestions.errorStyle}>
+                <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                <p>{formik.errors.question}</p>
+              </div>
+            ) : null}
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Opciones: </span>
               <div>
@@ -146,6 +145,12 @@ const NewQuestion = () => {
                   onBlur={formik.handleBlur}
                 />
               </div>
+              {formik.touched.options && formik.errors.options ? (
+                <div className={styleQuestions.errorStyle}>
+                  <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                  <p>{formik.errors.options}</p>
+                </div>
+              ) : null}
             </div>
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Respuesta correcta: </span>
@@ -160,7 +165,12 @@ const NewQuestion = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-
+            {formik.touched.answer && formik.errors.answer ? (
+              <div className={styleQuestions.errorStyle}>
+                <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                <p>{formik.errors.answer}</p>
+              </div>
+            ) : null}
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Pista: </span>
               <input
@@ -174,6 +184,12 @@ const NewQuestion = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
+            {formik.touched.hint && formik.errors.hint ? (
+              <div className={styleQuestions.errorStyle}>
+                <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                <p>{formik.errors.hint}</p>
+              </div>
+            ) : null}
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Imágen: </span>
               <input
@@ -187,13 +203,25 @@ const NewQuestion = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
+            {formik.touched.image && formik.errors.image ? (
+              <div className={styleQuestions.errorStyle}>
+                <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                <p>{formik.errors.image}</p>
+              </div>
+            ) : null}
           </div>
-          <div className="modal-footer">
+          <div className={styleQuestions.divBtnSave}>
             <input
               type="submit"
               className={styleQuestions.btnSave}
               value="GUARDAR"
             />
+            <Link href="/questions" className={styleQuestions.btnBack}>
+              <FaIcons.FaStepBackward
+                style={{ marginRight: "8px", marginLeft: "8px" }}
+              />
+              VOLVER
+            </Link>
           </div>
         </form>
       </div>

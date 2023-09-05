@@ -18,6 +18,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 const Categories = () => {
   const { user } = useUser();
+  const { updateCategoryId } = useUser();
+
   const router = useRouter();
   const [categorie, setCategorie] = useState([]);
 
@@ -72,6 +74,8 @@ const Categories = () => {
 
   //Questions
   const showQuestions = (id) => {
+    updateCategoryId(id);
+
     router.push({
       pathname: "/questions",
       query: { id },

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -23,15 +24,13 @@ const Questions = () => {
   const [quest, setQuestion] = useState([]);
   const [categorie, setCategorie] = useState({});
   const { user } = useUser();
+  const { categoryId } = useUser();
 
-  //Obtener id de categoria
-  const router = useRouter();
-  const { query: pid } = router;
-  const { id } = pid;
+ 
   //OBTENER CATEGORIA
   const getCategorie = async () => {
     const db = getFirestore();
-    const catRef = doc(db, "categories", id);
+    const catRef = doc(db, "categories", categoryId);
 
     try {
       const querySnap = await getDoc(catRef);
@@ -51,7 +50,7 @@ const Questions = () => {
     const db = getFirestore();
     const questionQuery = query(
       collection(db, "questions"),
-      where("category_ref", "==", `/categories/${id}`)
+      where("category_ref", "==", `/categories/${categoryId}`)
     );
     try {
       const querySnapShot = await getDocs(questionQuery);
@@ -65,19 +64,43 @@ const Questions = () => {
     }
   };
 
-  const sendIdCategorie = () => {
-    router.push({
-      pathname: "/newQuestion",
-      query: { id },
+
+  //ELIMINAR PREGUNTA
+  const deleteQuestion = async (idQuestion) => {
+    try {
+      const db = getFirestore();
+      const refQuestion = doc(db, "questions", idQuestion);
+      await deleteDoc(refQuestion);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = (idQuestion) => {
+    Swal.fire({
+      title: "Estás seguro?",
+      text: "No podrás volver atrás!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#6667AB",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, elimínalo!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteQuestion(idQuestion);
+        getQuestioByCategorie();
+        Swal.fire("Eliminado!", "Pregunta eliminada correctamente.", "success");
+      }
     });
   };
 
   useEffect(() => {
-    if (id) {
-      getQuestioByCategorie();
+
+    if (categoryId) {
       getCategorie();
+      getQuestioByCategorie();
     }
-  }, [id]);
+  }, [categoryId]);
 
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
@@ -98,7 +121,10 @@ const Questions = () => {
         />
       </div>
       <div style={{ padding: "0 0 10px 15px" }}>
-        <Link href="/newQuestion" className={styleQuestions.btnAdd} onClick={sendIdCategorie}>
+        <Link
+          href="/newQuestion"
+          className={styleQuestions.btnAdd}
+        >
           <FaIcons.FaPlus style={{ marginRight: "8px", marginLeft: "8px" }} />
           CREAR PREGUNTAS
         </Link>
@@ -107,16 +133,34 @@ const Questions = () => {
         <ol key={data.idQ}>
           <span className={styleQuestions.questionsStyle}>
             {index + 1}. {data.question}
-            <button
-              className={styleQuestions.btnHint}
-              onClick={() => {
-                Swal.fire(`${data.hint}`);
-              }}
-            >
-              <FaIcons.FaLightbulb className={styleQuestions.iconHint} />
-            </button>
+            <div className="dropdown">
+              <button
+                className={styleQuestions.btnList}
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <FaIcons.FaListAlt className={styleQuestions.iconList} />
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <button
+                  className={`dropdown-item ${styleQuestions.btnHint}`}
+                  onClick={() => {
+                    Swal.fire(`${data.hint}`);
+                  }}
+                >
+                  <FaIcons.FaLightbulb />
+                </button>
+                <button
+                  className={`dropdown-item ${styleQuestions.btnDelete}`}
+                  onClick={() => handleDelete(data.idQ)}
+                >
+                  <FaIcons.FaTrashAlt />
+                </button>
+              </ul>
+            </div>
           </span>
-          {data.options.map((dataOptions, index) => {
+          {Object.values(data.options).map((dataOptions, index) => {
             let equal = false;
             if (dataOptions.toLowerCase() === data.answer.toLowerCase()) {
               equal = true;

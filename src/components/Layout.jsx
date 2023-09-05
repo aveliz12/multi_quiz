@@ -25,13 +25,14 @@ const Layout = ({ children, title }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("userData");
+      localStorage.removeItem("categoryId");
       // Redirige a la página de inicio de sesión u otra página
       router.push("/");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
   };
-  
+
   return (
     <>
       <Head>
