@@ -78,7 +78,7 @@ const NewQuestion = () => {
             justifyContent: "center",
           }}
         >
-          Nueva Categoria
+          Nueva Pregunta
         </h5>
         <form onSubmit={formik.handleSubmit}>
           <div style={{ maxHeight: "500px", overflowY: "auto" }}>

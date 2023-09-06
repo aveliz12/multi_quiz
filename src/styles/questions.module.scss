@@ -46,6 +46,15 @@
       color: #f70000;
     }
   }
+  .btnEdit{
+    border: none;
+    background:none;
+    color: #341c78;
+    font-size: 20px;
+    &:hover{
+      color: #09ff00;
+    }
+  }
   .btnList {
     border: none;
     background-color: #fff;

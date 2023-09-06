@@ -4,7 +4,6 @@ import WithPrivateRoute from "../components/WithPrivateRoute";
 import { useUser } from "../components/UserContext";
 import { useRouter } from "next/router";
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -25,8 +24,8 @@ const Questions = () => {
   const [categorie, setCategorie] = useState({});
   const { user } = useUser();
   const { categoryId } = useUser();
+  const router = useRouter();
 
- 
   //OBTENER CATEGORIA
   const getCategorie = async () => {
     const db = getFirestore();
@@ -64,6 +63,13 @@ const Questions = () => {
     }
   };
 
+  //EDITAR PREGUNTA
+  const updateQuesiont = (id) => {
+    router.push({
+      pathname: "/updateQuestion/[id]",
+      query: { id },
+    });
+  };
 
   //ELIMINAR PREGUNTA
   const deleteQuestion = async (idQuestion) => {
@@ -95,7 +101,6 @@ const Questions = () => {
   };
 
   useEffect(() => {
-
     if (categoryId) {
       getCategorie();
       getQuestioByCategorie();
@@ -121,10 +126,7 @@ const Questions = () => {
         />
       </div>
       <div style={{ padding: "0 0 10px 15px" }}>
-        <Link
-          href="/newQuestion"
-          className={styleQuestions.btnAdd}
-        >
+        <Link href="/newQuestion" className={styleQuestions.btnAdd}>
           <FaIcons.FaPlus style={{ marginRight: "8px", marginLeft: "8px" }} />
           CREAR PREGUNTAS
         </Link>
@@ -142,7 +144,10 @@ const Questions = () => {
               >
                 <FaIcons.FaListAlt className={styleQuestions.iconList} />
               </button>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1"
+              >
                 <button
                   className={`dropdown-item ${styleQuestions.btnHint}`}
                   onClick={() => {
@@ -156,6 +161,12 @@ const Questions = () => {
                   onClick={() => handleDelete(data.idQ)}
                 >
                   <FaIcons.FaTrashAlt />
+                </button>
+                <button
+                  className={`dropdown-item ${styleQuestions.btnEdit}`}
+                  onClick={() => updateQuesiont(data.idQ)}
+                >
+                  <FaIcons.FaEdit />
                 </button>
               </ul>
             </div>
