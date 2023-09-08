@@ -121,7 +121,6 @@ const UpdateQuestion = () => {
             answer: questionData.answer || "",
             category_ref: questionData.category_ref || "",
             hint: questionData.hint || "",
-            image: questionData.image || "",
             options: questionData.options || { 0: "", 1: "", 2: "", 3: "" },
             question: questionData.question || "",
           }}
@@ -267,16 +266,9 @@ const UpdateQuestion = () => {
                       className="form-control"
                       placeholder="Ingrese la url de la imagen."
                       value={props.values.image}
-                      onChange={props.handleChange}
-                      onBlur={props.handleBlur}
+                      
                     />
                   </div>
-                  {props.touched.image && props.errors.image ? (
-                    <div className={styleQuestions.errorStyle}>
-                      <p className={styleQuestions.titleErrorStyle}>Error: </p>
-                      <p>{props.errors.image}</p>
-                    </div>
-                  ) : null}
                 </div>
                 <div className={styleQuestions.divBtnSave}>
                   <input

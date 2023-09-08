@@ -142,7 +142,7 @@ const Questions = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <FaIcons.FaListAlt className={styleQuestions.iconList} />
+                <FaIcons.FaPencilAlt className={styleQuestions.iconList} />
               </button>
               <ul
                 className="dropdown-menu"

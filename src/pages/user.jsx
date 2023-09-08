@@ -106,8 +106,8 @@ const User = () => {
       </div>
       <ul>
         <div className={styleUsers.table}>
-          <table className="table table-dark table-striped">
-            <thead>
+          <table className="table table-striped table-bordered" >
+            <thead style={{backgroundColor:"#6667AB",color:"#fff"}}>
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombres</th>

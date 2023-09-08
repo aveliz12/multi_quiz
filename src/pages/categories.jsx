@@ -114,14 +114,17 @@ const Categories = () => {
           <div className="container" key={category.id}>
             <div className={styleCategories.card}>
               <div className={styleCategories.card_landing}>
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  width={150}
-                  height={200}
-                  decoding="async"
-                  className={styleCategories.img}
-                />
+                
+                <div style={{display:"flex",justifyContent:"center"}}>
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    width={150}
+                    height={200}
+                    decoding="async"
+                    className={styleCategories.img}
+                  />
+                </div>
                 <div className={styleCategories.header}>
                   <h6 className={styleCategories.title}>{category.name}</h6>
                   <button

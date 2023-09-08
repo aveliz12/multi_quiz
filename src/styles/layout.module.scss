@@ -1,17 +1,22 @@
 .layoutContainer {
+  max-height: 100%;
+  overflow-x: auto;
   display: flex;
   .main {
     flex-grow: 1;
     transition: margin-left 0.4s ease; /* Agrega una transición suave */
+    max-height: 100vh; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;
     .containerAccount {
       display: flex;
       justify-content: space-between;
-      background-color: #6667AB;
+      background-color: #6667ab;
       margin: 0 0 15px 0;
       .title {
         font-weight: bold;
         font-size: 30px;
         margin: 5px 0 5px 10px;
+        color: #fff;
       }
       .btnAccount {
         display: flex;
@@ -33,12 +38,12 @@
         }
       }
       .li {
-        background-color: #6667AB;
+        background-color: #6667ab;
         border: none;
         font-size: 30px;
         margin: 0 10px 0 0;
         .i {
-          color: #000;
+          color: #fff;
         }
       }
     }

@@ -7,17 +7,10 @@ import styleLayout from "../styles/layout.module.scss";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import * as FaIcons from "react-icons/fa";
-// import {
-//   doc,
-//   getDoc,
-//   getFirestore,
-//   collection,
-//   getDocs,
-// } from "firebase/firestore";
+
 const Layout = ({ children, title }) => {
   const router = useRouter();
 
-  //const [confirm, setConfirm] = useState(false);
 
   //EXTRAER LOS USUARIOS POR SU ROL
 

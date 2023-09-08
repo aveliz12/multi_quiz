@@ -60,9 +60,7 @@ const NewQuestion = () => {
       }),
       answer: Yup.string().required("La respuesta es requerida."),
       hint: Yup.string().required("La pista es requerida."),
-      image: Yup.string()
-        .url("Ingrese un enlce correcto")
-        .required("El enlace de la imagen es requerido."),
+      
     }),
     onSubmit: (values) => {
       newQuestion(values);
@@ -199,16 +197,8 @@ const NewQuestion = () => {
                 className="form-control"
                 placeholder="Ingrese la url de la imagen."
                 value={formik.values.image}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
             </div>
-            {formik.touched.image && formik.errors.image ? (
-              <div className={styleQuestions.errorStyle}>
-                <p className={styleQuestions.titleErrorStyle}>Error: </p>
-                <p>{formik.errors.image}</p>
-              </div>
-            ) : null}
           </div>
           <div className={styleQuestions.divBtnSave}>
             <input
