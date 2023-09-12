@@ -27,9 +27,13 @@ const User = () => {
   const [users, setUsers] = useState([]);
   const [categorie, setCategorie] = useState([]);
   const [ranked, setRanked] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   let index = 0;
   const router = useRouter();
-
+  const filteredRanked = categorie.filter((dataRanked) => {
+    return selectedCategory === "" || dataRanked.name === selectedCategory;
+  });
   //MODAL
   const [modalShow, setModalShow] = useState(false);
 
@@ -39,6 +43,8 @@ const User = () => {
   };
 
   const handleHideModal = () => {
+    setCategorie([]);
+    setSelectedCategory("");
     setModalShow(false);
   };
   //Obtener RANKED
@@ -72,14 +78,19 @@ const User = () => {
       }
 
       //Obtener info de categoria
+      const categoriesData = [];
+
       for (const categoryId of uniqueCategorie) {
         const catRef = doc(db, "categories", categoryId);
         const categorieDocSnap = await getDoc(catRef);
 
         if (categorieDocSnap.exists()) {
           const categoryData = categorieDocSnap.data();
-          setCategorie(categoryData);
+          categoriesData.push(categoryData);
         }
+      }
+      if (categoriesData.length > 0) {
+        setCategorie(categoriesData);
       }
     } catch (error) {
       console.log(error);
@@ -223,13 +234,87 @@ const User = () => {
                         titleHead="Características de juego"
                       >
                         <select
-                          class="form-select"
-                          aria-label="Default select example"
+                          className="form-select"
+                          value={selectedCategory}
+                          onChange={(e) => setSelectedCategory(e.target.value)}
                         >
-                          <option selected>Seleccione una opción...</option>
-                          <option value={categorie.id}>{categorie.name}</option>
-                         
+                          <option value="" disabled>
+                            Seleccione una opción...
+                          </option>
+                          {categorie.length > 0 ? (
+                            categorie.map((dataCargeroy, index) => (
+                              <option key={index} value={dataCargeroy.id}>
+                                {dataCargeroy.name}
+                              </option>
+                            ))
+                          ) : (
+                            <option disabled>
+                              No hay categorías disponibles
+                            </option>
+                          )}
                         </select>
+                        <div
+                          style={{
+                            paddingTop: "20px",
+                            maxHeight: "500px",
+                            overflowY: "auto",
+                          }}
+                        >
+                          {selectedCategory === "" ? (
+                            <p>Seleccione una opción</p>
+                          ) : filteredRanked.length > 0 ? (
+                            <table className="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Tiempo</th>
+                                  <th scope="col">Respuestas Correctas</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {ranked.map((dataRanked, index) => {
+                                  // Convierte el timestamp a un objeto Date
+                                  const timestamp = dataRanked.time.toDate();
+
+                                  // Formatea la fecha y hora como una cadena legible
+                                  const formattedDateTime =
+                                    timestamp.toLocaleString();
+
+                                  const correctAnswers =
+                                    dataRanked.correct_answer;
+
+                                  // Establece un estilo CSS condicional para la barra de porcentaje
+                                  const percentageCellStyle = {
+                                    backgroundColor:
+                                      correctAnswers >= 7 ? "green" : "red",
+                                    width: "100%",
+                                    height: "20px",
+                                    fontWeight: "bold",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                  };
+
+                                  return (
+                                    <tr key={dataRanked.id}>
+                                      <th scope="row">{index + 1}</th>
+                                      <td>{formattedDateTime}</td>
+                                      <td key={index}>
+                                        <div style={percentageCellStyle}>
+                                          {correctAnswers} de 10
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <p>
+                              No hay datos disponibles para la categoría
+                              seleccionada.
+                            </p>
+                          )}
+                        </div>
                       </Modal>
                     </div>
                   </td>
