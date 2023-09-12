@@ -41,26 +41,26 @@ const NewQuestion = () => {
     }
   };
   //VALIDACION PARA FORMULARIO
+  console.log(categoryId)
   const formik = useFormik({
     initialValues: {
       answer: "",
       category_ref: `/categories/${categoryId}`,
       hint: "",
-      image: "",
-      options: { 0: "", 1: "", 2: "", 3: "" },
+      options: ["", "", "", ""],
       question: "",
     },
     validationSchema: Yup.object({
       question: Yup.string().required("La pregunta es requerida."),
-      options: Yup.object().shape({
-        0: Yup.string().required("La primera opción es requerida."),
-        1: Yup.string().required("La segunda opción es requerida."),
-        2: Yup.string().required("La tercera opción es requerida."),
-        3: Yup.string().required("La cuarta opción es requerida."),
-      }),
+      options: Yup.array()
+        .of(Yup.string())
+        .test(
+          "all-options-filled",
+          "Debes completar las 4 opciones.",
+          (value) => value.filter((option) => !!option).length === 4
+        ),
       answer: Yup.string().required("La respuesta es requerida."),
       hint: Yup.string().required("La pista es requerida."),
-      
     }),
     onSubmit: (values) => {
       newQuestion(values);
@@ -101,7 +101,27 @@ const NewQuestion = () => {
             ) : null}
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Opciones: </span>
-              <div>
+              {[0, 1, 2, 3].map((index) => (
+                <div key={index}>
+                  <input
+                    type="text"
+                    id={`options[${index}]`}
+                    aria-label="Opciones"
+                    className="form-control"
+                    placeholder={`Ingrese la opción ${index + 1}.`}
+                    value={formik.values.options[index]}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </div>
+              ))}
+              {formik.touched.options && formik.errors.options ? (
+                <div className={styleQuestions.errorStyle}>
+                  <p className={styleQuestions.titleErrorStyle}>Error: </p>
+                  <p>{formik.errors.options}</p>
+                </div>
+              ) : null}
+              {/* <div>
                 <input
                   type="text"
                   id="options[0]"
@@ -148,7 +168,7 @@ const NewQuestion = () => {
                   <p className={styleQuestions.titleErrorStyle}>Error: </p>
                   <p>{formik.errors.options}</p>
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Respuesta correcta: </span>
@@ -192,11 +212,9 @@ const NewQuestion = () => {
               <span className={styleQuestions.span}>Imágen: </span>
               <input
                 type="text"
-                id="image"
                 aria-label="Imagen"
                 className="form-control"
                 placeholder="Ingrese la url de la imagen."
-                value={formik.values.image}
               />
             </div>
           </div>

@@ -105,6 +105,7 @@ const Questions = () => {
       getCategorie();
       getQuestioByCategorie();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   return (

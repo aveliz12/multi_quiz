@@ -5,12 +5,15 @@ import {
   getFirestore,
   doc,
   deleteDoc,
+  query,
+  where,
+  getDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { deleteUser as deleteUserAuth } from "firebase/auth";
-
+import Modal from "../components/Modal";
 import styleUsers from "../styles/users.module.scss";
 import * as FaIcons from "react-icons/fa";
 import Link from "next/link";
@@ -22,9 +25,68 @@ const User = () => {
   const { user } = useUser();
   const [usr, setUsr] = useState({});
   const [users, setUsers] = useState([]);
+  const [categorie, setCategorie] = useState([]);
+  const [ranked, setRanked] = useState([]);
   let index = 0;
   const router = useRouter();
 
+  //MODAL
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleShowModal = (userId) => {
+    setModalShow(true);
+    getRankedAndCategorieByUser(userId);
+  };
+
+  const handleHideModal = () => {
+    setModalShow(false);
+  };
+  //Obtener RANKED
+  const getRankedAndCategorieByUser = async (userId) => {
+    const db = getFirestore();
+    const rankedRef = query(
+      collection(db, "ranked"),
+      where("user", "==", `/users/${userId}`)
+    );
+    try {
+      const querySnapShot = await getDocs(rankedRef);
+      const rankedData = querySnapShot.docs.map((doc) => ({
+        idRanked: doc.id,
+        ...doc.data(),
+      }));
+      setRanked(rankedData);
+      // Array para almacenar las categorías únicas
+      const uniqueCategorie = [];
+
+      // Iterar sobre los documentos encontrados
+      for (const docSnap of querySnapShot.docs) {
+        //Obtener el campo categorie del ranked
+        const categoryRef = docSnap.data().category;
+        //Extraer el id
+        const categoryId = categoryRef.split("/").pop();
+
+        //Verificar si la categoria ya se encuentra en la lista
+        if (!uniqueCategorie.includes(categoryId)) {
+          uniqueCategorie.push(categoryId);
+        }
+      }
+
+      //Obtener info de categoria
+      for (const categoryId of uniqueCategorie) {
+        const catRef = doc(db, "categories", categoryId);
+        const categorieDocSnap = await getDoc(catRef);
+
+        if (categorieDocSnap.exists()) {
+          const categoryData = categorieDocSnap.data();
+          setCategorie(categoryData);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //OBTENER USUARIOS
   const getUsers = async () => {
     const db = getFirestore();
     const userCollectionRef = collection(db, "users");
@@ -91,6 +153,8 @@ const User = () => {
     const parseUserData = JSON.parse(dataStorage);
     setUsr(parseUserData);
     getUsers();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -106,8 +170,8 @@ const User = () => {
       </div>
       <ul>
         <div className={styleUsers.table}>
-          <table className="table table-striped table-bordered" >
-            <thead style={{backgroundColor:"#6667AB",color:"#fff"}}>
+          <table className="table table-striped table-bordered">
+            <thead style={{ backgroundColor: "#6667AB", color: "#fff" }}>
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombres</th>
@@ -147,6 +211,26 @@ const User = () => {
                       >
                         <FaIcons.FaTrashAlt />
                       </button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => handleShowModal(user.id)}
+                      >
+                        <FaIcons.FaChartBar />
+                      </button>
+                      <Modal
+                        show={modalShow}
+                        onHide={handleHideModal}
+                        titleHead="Características de juego"
+                      >
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Seleccione una opción...</option>
+                          <option value={categorie.id}>{categorie.name}</option>
+                         
+                        </select>
+                      </Modal>
                     </div>
                   </td>
                 </tr>

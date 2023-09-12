@@ -11,7 +11,6 @@ import * as FaIcons from "react-icons/fa";
 const Layout = ({ children, title }) => {
   const router = useRouter();
 
-
   //EXTRAER LOS USUARIOS POR SU ROL
 
   const handleSignOut = async () => {
@@ -38,8 +37,12 @@ const Layout = ({ children, title }) => {
           crossOrigin="anonymous"
         ></link>
       </Head>
-      {router.pathname === "/login" || router.pathname === "/newAccount" ? (
-        <div className={login.container_login}>{children}</div>
+      {router.pathname === "/login" ||
+      router.pathname === "/newAccount" ||
+      router.pathname === "/" ? (
+        <div className={router.pathname === "/" ? "" : login.container_login}>
+          {children}
+        </div>
       ) : (
         <div className={styleLayout.layoutContainer}>
           <SideBar />
