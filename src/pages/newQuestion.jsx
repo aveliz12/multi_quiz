@@ -121,54 +121,7 @@ const NewQuestion = () => {
                   <p>{formik.errors.options}</p>
                 </div>
               ) : null}
-              {/* <div>
-                <input
-                  type="text"
-                  id="options[0]"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 1."
-                  value={formik.values.options[0]}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <input
-                  type="text"
-                  id="options[1]"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 2."
-                  value={formik.values.options[1]}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <input
-                  type="text"
-                  id="options[2]"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 3."
-                  value={formik.values.options[2]}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <input
-                  type="text"
-                  id="options[3]"
-                  aria-label="Opciones"
-                  className="form-control"
-                  placeholder="Ingrese la opción 4."
-                  value={formik.values.options[3]}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.options && formik.errors.options ? (
-                <div className={styleQuestions.errorStyle}>
-                  <p className={styleQuestions.titleErrorStyle}>Error: </p>
-                  <p>{formik.errors.options}</p>
-                </div>
-              ) : null} */}
+              
             </div>
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Respuesta correcta: </span>

@@ -59,17 +59,15 @@ const UpdateQuestion = () => {
   //Validation Schema para questions
   const validationSchema = Yup.object({
     question: Yup.string().required("La pregunta es requerida."),
-    options: Yup.object().shape({
-      0: Yup.string().required("La primera opción es requerida."),
-      1: Yup.string().required("La segunda opción es requerida."),
-      2: Yup.string().required("La tercera opción es requerida."),
-      3: Yup.string().required("La cuarta opción es requerida."),
-    }),
+    options: Yup.array()
+      .of(Yup.string())
+      .test(
+        "all-options-filled",
+        "Debes completar las 4 opciones.",
+        (value) => value.filter((option) => !!option).length === 4
+      ),
     answer: Yup.string().required("La respuesta es requerida."),
     hint: Yup.string().required("La pista es requerida."),
-    image: Yup.string()
-      .url("Ingrese un enlce correcto")
-      .required("El enlace de la imagen es requerido."),
   });
 
   //UpdateQuestions
@@ -98,6 +96,7 @@ const UpdateQuestion = () => {
       getQuestion();
       getCategorie();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pid, categoryId]);
 
   return (
@@ -121,7 +120,7 @@ const UpdateQuestion = () => {
             answer: questionData.answer || "",
             category_ref: questionData.category_ref || "",
             hint: questionData.hint || "",
-            options: questionData.options || { 0: "", 1: "", 2: "", 3: "" },
+            options: questionData.options || ["", "", "", ""],
             question: questionData.question || "",
           }}
           onSubmit={(values) => handleUpdateQuestions(values)}
@@ -166,7 +165,29 @@ const UpdateQuestion = () => {
                   </div>
                   <div className={styleQuestions.inputStyle}>
                     <span className={styleQuestions.span}>Opciones: </span>
-                    <div>
+                    {[0, 1, 2, 3].map((index) => (
+                      <div key={index}>
+                        <input
+                          type="text"
+                          id={`options[${index}]`}
+                          aria-label="Opciones"
+                          className="form-control"
+                          placeholder={`Ingrese la opción ${index + 1}.`}
+                          value={props.values.options[index]}
+                          onChange={props.handleChange}
+                          onBlur={props.handleBlur}
+                        />
+                      </div>
+                    ))}
+                    {props.touched.options && props.errors.options ? (
+                      <div className={styleQuestions.errorStyle}>
+                        <p className={styleQuestions.titleErrorStyle}>
+                          Error:{" "}
+                        </p>
+                        <p>{props.errors.options}</p>
+                      </div>
+                    ) : null}
+                    {/* <div>
                       <input
                         type="text"
                         id="options[0]"
@@ -215,11 +236,11 @@ const UpdateQuestion = () => {
                         </p>
                         <p>{props.errors.options}</p>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                   <div className={styleQuestions.inputStyle}>
                     <span className={styleQuestions.span}>
-                      Respuesta correcta:{" "}
+                      Respuesta correcta:
                     </span>
                     <input
                       type="text"
@@ -266,7 +287,6 @@ const UpdateQuestion = () => {
                       className="form-control"
                       placeholder="Ingrese la url de la imagen."
                       value={props.values.image}
-                      
                     />
                   </div>
                 </div>
