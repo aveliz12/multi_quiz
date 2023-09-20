@@ -27,25 +27,46 @@ const User = () => {
   const [users, setUsers] = useState([]);
   const [categorie, setCategorie] = useState([]);
   const [ranked, setRanked] = useState([]);
+  const [filteredRanked, setFilteredRanked] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   let index = 0;
   const router = useRouter();
-  const filteredRanked = categorie.filter((dataRanked) => {
-    return selectedCategory === "" || dataRanked.name === selectedCategory;
-  });
+  // Función para filtrar los "rankeds" según la categoría seleccionada
+  const filterRankedByCategory = (category) => {
+    if (category === "") {
+      setFilteredRanked([]); // Si no se seleccionó una categoría, no mostramos ningún "ranked"
+    } else {
+      // Filtra los "rankeds" en función de la categoría seleccionada
+      const filteredData = ranked.filter((dataRanked) =>
+        dataRanked.category.includes(category)
+      );
+      setFilteredRanked(filteredData);
+    }
+  };
+
+  // Función para manejar el cambio de categoría seleccionada en el <select>
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    filterRankedByCategory(category); // Filtrar los "rankeds" al cambiar la categoría
+  };
+
   //MODAL
   const [modalShow, setModalShow] = useState(false);
 
   const handleShowModal = (userId) => {
     setModalShow(true);
     getRankedAndCategorieByUser(userId);
+    filterRankedByCategory(selectedCategory); // Filtrar los "rankeds" cuando se abre el modal
   };
 
   const handleHideModal = () => {
+    setModalShow(false);
     setCategorie([]);
     setSelectedCategory("");
-    setModalShow(false);
+    setFilteredRanked([]);
+    setRanked([]);
   };
   //Obtener RANKED
   const getRankedAndCategorieByUser = async (userId) => {
@@ -86,7 +107,10 @@ const User = () => {
 
         if (categorieDocSnap.exists()) {
           const categoryData = categorieDocSnap.data();
-          categoriesData.push(categoryData);
+          categoriesData.push({
+            id: categoryId, // Agregar el ID de la categoría
+            ...categoryData, // Agregar los datos de la categoría
+          });
         }
       }
       if (categoriesData.length > 0) {
@@ -236,15 +260,18 @@ const User = () => {
                         <select
                           className="form-select"
                           value={selectedCategory}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
+                          onChange={handleCategoryChange}
                         >
                           <option value="" disabled>
                             Seleccione una opción...
                           </option>
                           {categorie.length > 0 ? (
-                            categorie.map((dataCargeroy, index) => (
-                              <option key={index} value={dataCargeroy.id}>
-                                {dataCargeroy.name}
+                            categorie.map((dataCategory) => (
+                              <option
+                                key={dataCategory.id}
+                                value={dataCategory.id}
+                              >
+                                {dataCategory.name}
                               </option>
                             ))
                           ) : (
@@ -260,7 +287,7 @@ const User = () => {
                             overflowY: "auto",
                           }}
                         >
-                          {selectedCategory === "" ? (
+                          {filteredRanked === "" ? (
                             <p>Seleccione una opción</p>
                           ) : filteredRanked.length > 0 ? (
                             <table className="table">
@@ -272,47 +299,47 @@ const User = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {ranked.map((dataRanked, index) => {
-                                  // Convierte el timestamp a un objeto Date
-                                  const timestamp = dataRanked.time.toDate();
+                                {filteredRanked
+                                  .slice() // Copiamos la matriz para no modificar la original
+                                  .sort((a, b) => a.answer - b.answer)
+                                  .map((dataRanked, index) => {
+                                    // Convierte el timestamp a un objeto Date
+                                    const timestamp = dataRanked.time.toDate();
 
-                                  // Formatea la fecha y hora como una cadena legible
-                                  const formattedDateTime =
-                                    timestamp.toLocaleString();
+                                    // Formatea la fecha y hora como una cadena legible
+                                    const formattedDateTime =
+                                      timestamp.toLocaleString();
 
-                                  const correctAnswers =
-                                    dataRanked.correct_answer;
+                                    const correctAnswers =
+                                      dataRanked.correct_answer;
 
-                                  // Establece un estilo CSS condicional para la barra de porcentaje
-                                  const percentageCellStyle = {
-                                    backgroundColor:
-                                      correctAnswers >= 7 ? "green" : "red",
-                                    width: "100%",
-                                    height: "20px",
-                                    fontWeight: "bold",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                  };
+                                    // Establece un estilo CSS condicional para la barra de porcentaje
+                                    const percentageCellStyle = {
+                                      backgroundColor:
+                                        correctAnswers >= 7 ? "green" : "red",
+                                      width: "100%",
+                                      height: "20px",
+                                      fontWeight: "bold",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                    };
 
-                                  return (
-                                    <tr key={dataRanked.id}>
-                                      <th scope="row">{index + 1}</th>
-                                      <td>{formattedDateTime}</td>
-                                      <td key={index}>
-                                        <div style={percentageCellStyle}>
-                                          {correctAnswers} de 10
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
+                                    return (
+                                      <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{formattedDateTime}</td>
+                                        <td>
+                                          <div style={percentageCellStyle}>
+                                            {correctAnswers} de 10
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
                               </tbody>
                             </table>
                           ) : (
-                            <p>
-                              No hay datos disponibles para la categoría
-                              seleccionada.
-                            </p>
+                            <p>No hay datos disponibles.</p>
                           )}
                         </div>
                       </Modal>
