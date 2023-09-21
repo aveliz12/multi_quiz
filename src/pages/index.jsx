@@ -14,13 +14,13 @@ export default function Home() {
 
   var datas = {
     tecnología:
-      "The garden strawberry (or simply strawberry /ˈstrɔːbᵊri/; Fragaria × ananassa) is a widely grown hybrid species of the genus Fragaria (collectively known as the strawberries)",
+      "Explora el fascinante mundo de la innovación y la tecnología. Demuestra tu conocimiento sobre el mundo digital y compite en la categoría de Tecnología en MULTIQUIZ.",
     videojuegos:
-      "A banana is an edible fruit, botanically a berry, produced by several kinds of large herbaceous flowering plants in the genus Musa.",
+      "Adéntrate en el emocionante mundo de los videojuegos en MULTIQUIZ. Ponte a prueba con preguntas sobre tus juegos favoritos y conviértete en un experto en esta categoría llena de diversión.",
     psicología:
-      "The apple tree (Malus domestica) is a deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple. It is cultivated worldwide as a fruit tree, and is the most widely grown species in the genus Malus.",
+      "Sumérgete en la mente humana y los misterios del comportamiento. Descifra las complejidades de la mente humana mientras respondes preguntas psicológicas en MULTIQUIZ. Explora emociones, comportamientos y teorías en esta desafiante categoría.",
     música:
-      "The orange (specifically, the sweet orange) is the fruit of the citrus species Citrus × sinensis in the family Rutaceae.",
+      " ¡Deja que la música te guíe a través de esta divertida categoría en MULTIQUIZ! Desde géneros musicales hasta artistas icónicos, demuestra tus conocimientos musicales y supera los desafíos.",
   };
   return (
     <Layout>
@@ -52,93 +52,111 @@ export default function Home() {
         </div>
       </div>
       <br />
-      <div>
-        <ul className={`nav justify-content-center ${styleIndex.nav}`}>
-          <li className="nav-item">
-            <a
-              className={`nav-link ${selectedOption === "acercaDelJuego"}`}
-              href="#"
-              onClick={() => handleNavClick("acercaDelJuego")}
-            >
-              Acerca del juego
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              className={`nav-link ${selectedOption === "categorias"}`}
-              href="#"
-              onClick={() => handleNavClick("categorias")}
-            >
-              Categorías
-            </a>
-          </li>
-        </ul>
-      </div>
-      <br />
-      {selectedOption === "acercaDelJuego" && (
-        <div className="about-game">
-          <h1>Acerca del juego</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. ...</p>
+      <div className={styleIndex.mainContent}>
+        <div>
+          <ul className={`nav justify-content-center ${styleIndex.nav}`}>
+            <li className="nav-item">
+              <a
+                className={`nav-link ${selectedOption === "acercaDelJuego"}`}
+                href="#"
+                onClick={() => handleNavClick("acercaDelJuego")}
+              >
+                Acerca del juego
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className={`nav-link ${selectedOption === "categorias"}`}
+                href="#"
+                onClick={() => handleNavClick("categorias")}
+              >
+                Categorías
+              </a>
+            </li>
+          </ul>
         </div>
-      )}
-      {selectedOption === "categorias" && (
-        <div className={styleIndex.body}>
-          <div style={{ textAlign: "center", padding: "0 15% 0 15%" }}>
-            <h1>Categorías</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam
-              provident magni nisi quasi totam. Dicta, voluptatibus ad esse
-              laborum voluptas odio harum corrupti aspernatur facilis libero
-              reprehenderit? Ea, doloribus ab.
-            </p>
+        <br />
+        {selectedOption === "acercaDelJuego" && (
+          <div className={styleIndex.aboutGame}>
+            <h1>Acerca del juego</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. ...</p>
           </div>
-
-          <div id={styleIndex.scene}>
-            <div id={styleIndex.left_zone}>
-              <ul className={styleIndex.list}>
-                {Object.entries(datas).map(([index, val]) => (
-                  <li className={styleIndex.item} key={index}>
-                    <input
-                      type="radio"
-                      id={`${styleIndex.radio_}${val}`}
-                      name="basic_carousel"
-                      value={val}
-                      defaultChecked={index === "tecnología"}
-                      onChange={() => {
-                        setBackgroundImage(
-                          `/images/backgroundsIndex/${index}.jpg`
-                        );
-                      }}
-                    />
-                    <label
-                      htmlFor={`${styleIndex.radio_}${val}`}
-                      className={`${styleIndex.label_}${index}`}
-                    >
-                      {index}
-                    </label>
-                    <div
-                      className={`${styleIndex.content} ${styleIndex.content_}${index} `}
-                    >
-                      <h3>{val}</h3>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+        )}
+        {selectedOption === "categorias" && (
+          <div className={styleIndex.body}>
+            <div style={{ textAlign: "center", padding: "0 15% 0 15%" }}>
+              <h2>Categorías</h2>
+              <p>
+                Explora un mundo de conocimientos y desafíos en las diversas
+                categorías disponibles en MULTIQUIZ. Nuestras categorías abarcan
+                una amplia variedad de temas. Pon a prueba tu destreza,
+                aprendizaje y diversión mientras respondes preguntas y compites
+                por la victoria. ¡Elige tu categoría favorita y demuestra tu
+                dominio en MULTIQUIZ! A continuación se presentan algunas de las
+                categorías que puedes encontrar en nuestro juego.
+              </p>
             </div>
-            <div id={styleIndex.middle_border}></div>
-            <div id={styleIndex.right_zone}>
-              <div className={styleIndex.imageContainer}>
-                <Image
-                  src={backgroundImage}
-                  alt="Imagen de fondo"
-                  width={330}
-                  height={280}
-                />
+
+            <div id={styleIndex.scene}>
+              <div id={styleIndex.left_zone}>
+                <ul className={styleIndex.list}>
+                  {Object.entries(datas).map(([index, val]) => (
+                    <li className={styleIndex.item} key={index}>
+                      <input
+                        type="radio"
+                        id={`${styleIndex.radio_}${val}`}
+                        name="basic_carousel"
+                        value={val}
+                        defaultChecked={index === "tecnología"}
+                        onChange={() => {
+                          setBackgroundImage(
+                            `/images/backgroundsIndex/${index}.jpg`
+                          );
+                        }}
+                      />
+                      <label
+                        htmlFor={`${styleIndex.radio_}${val}`}
+                        className={`${styleIndex.label_}${index}`}
+                      >
+                        {index}
+                      </label>
+                      <div
+                        className={`${styleIndex.content} ${styleIndex.content_}${index} `}
+                      >
+                        <h3>{val}</h3>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div id={styleIndex.middle_border}></div>
+              <div id={styleIndex.right_zone}>
+                <div className={styleIndex.imageContainer}>
+                  <Image
+                    src={backgroundImage}
+                    alt="Imagen de fondo"
+                    width={330}
+                    height={280}
+                  />
+                </div>
               </div>
             </div>
+            <br />
+          </div>
+        )}
+      </div>
+      <br />
+      <footer className={`footer ${styleIndex.footer}`}>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <p className="text-center">
+                © 2023 Tu Sitio Web | Todos los derechos reservados
+              </p>
+            </div>
           </div>
         </div>
-      )}
+      </footer>
     </Layout>
   );
 }
