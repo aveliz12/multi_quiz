@@ -6,6 +6,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import srtyleProfile from "../styles/profile.module.scss";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { auth } from "../firebase";
+import { updateEmail, updatePassword } from "firebase/auth";
+
 const Profile = () => {
   const { user } = useUser();
   const validationSchema = Yup.object({
@@ -16,6 +20,70 @@ const Profile = () => {
       .required("El correo es requerido."),
     user_name: Yup.string().required("El nombre de usuario es requerido."),
   });
+  const validationSchemaPasword = Yup.object({
+    password: Yup.string()
+      .min(8, "La contraseña debe tener mínimo 8 caracteres.")
+      .required("La contraseña es requerida."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir.")
+      .required("Confirmar la contraseña es requerido."),
+  });
+
+  const handleUpdateProfile = async (usr) => {
+    const db = getFirestore();
+    const profileRef = doc(db, "users", user.id);
+    try {
+      await updateDoc(profileRef, usr);
+
+      if (usr.email) {
+        await updateEmail(auth.currentUser, usr.email);
+      }
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Perfil actualizado correctamente.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Error al actualizar datos.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  };
+
+  const updatePasswordInAuth = async (newPass) => {
+    try {
+      let newPassword = "";
+      console.log(newPass);
+      if (newPass !== null) {
+        newPassword = newPass.password;
+      }
+      await updatePassword(auth.currentUser, newPassword);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Contraseña actualizada correctamente.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Error al actualizar contraseña.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  };
 
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
@@ -39,7 +107,7 @@ const Profile = () => {
             user_name: user?.user_name || "",
           }}
           onSubmit={(values) => {
-            console.log(values);
+            handleUpdateProfile(values);
           }}
         >
           {(props) => {
@@ -49,9 +117,7 @@ const Profile = () => {
                   <input
                     id="name"
                     type="text"
-                    aria-label="Nombre"
                     className="form-control"
-                    placeholder="Nombre"
                     value={props.values.name}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
@@ -68,9 +134,7 @@ const Profile = () => {
                   <input
                     id="last_name"
                     type="text"
-                    aria-label="Apellido"
                     className="form-control"
-                    placeholder="Apellido"
                     value={props.values.last_name}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
@@ -87,9 +151,7 @@ const Profile = () => {
                   <input
                     id="email"
                     type="email"
-                    aria-label="Correo electrónico"
                     className="form-control"
-                    placeholder="Correo electrónico"
                     value={props.values.email}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
@@ -106,9 +168,7 @@ const Profile = () => {
                   <input
                     id="user_name"
                     type="text"
-                    aria-label="Nombre de usuario"
                     className="form-control"
-                    placeholder="Nombre de usuario"
                     value={props.values.user_name}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
@@ -124,8 +184,6 @@ const Profile = () => {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
                   }}
                 >
                   <input
@@ -134,30 +192,68 @@ const Profile = () => {
                     value="ACTUALIZAR DATOS"
                   />
                 </div>
+              </form>
+            );
+          }}
+        </Formik>
+        <hr />
+        <Formik
+          validationSchema={validationSchemaPasword}
+          enableReinitialize
+          initialValues={{
+            password: "",
+            confirmPassword: "",
+          }}
+          onSubmit={(values) => {
+            updatePasswordInAuth(values);
+          }}
+        >
+          {(props) => {
+            return (
+              <form onSubmit={props.handleSubmit}>
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
                     id="password"
                     type="password"
-                    aria-label="Contraseña"
                     className="form-control"
-                    placeholder="Contraseña"
-                    // onChange={props.handleChange}
-                    // onBlur={props.handleBlur}
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
                   />
                   <label htmlFor="password">Contraseña</label>
                 </div>
+                {props.touched.password && props.errors.password ? (
+                  <div className={srtyleProfile.errorStyle}>
+                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
+                    <p>{props.errors.password}</p>
+                  </div>
+                ) : null}
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
-                    id="password"
+                    id="confirmPassword"
                     type="password"
-                    aria-label="Contraseña"
                     className="form-control"
-                    placeholder="Contraseña"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
                   />
-                  <label htmlFor="password">Confirmar contraseña</label>
+                  <label htmlFor="confirmPassword">Confirmar contraseña</label>
                 </div>
-                <div>
-                  <button className={srtyleProfile.btnUpdate}>ACTUALIZAR CONTRASEÑA</button>
+                {props.touched.confirmPassword &&
+                props.errors.confirmPassword ? (
+                  <div className={srtyleProfile.errorStyle}>
+                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
+                    <p>{props.errors.confirmPassword}</p>
+                  </div>
+                ) : null}
+                <div
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <input
+                    type="submit"
+                    className={srtyleProfile.btnUpdate}
+                    value="ACTUALIZAR CONTRASEÑA"
+                  />
                 </div>
               </form>
             );
