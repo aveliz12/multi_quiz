@@ -4,6 +4,10 @@ import styleIndex from "../styles/index.module.scss";
 import Image from "next/image";
 
 export default function Home() {
+  const [selectedOption, setSelectedOption] = useState("acercaDelJuego");
+  const handleNavClick = (option) => {
+    setSelectedOption(option);
+  };
   const [backgroundImage, setBackgroundImage] = useState(
     "/images/backgroundsIndex/tecnología.jpg"
   );
@@ -48,62 +52,93 @@ export default function Home() {
         </div>
       </div>
       <br />
-      <div className={styleIndex.body}>
-        <div style={{ textAlign: "center", padding: "0 15% 0 15%" }}>
-          <h1>Categorías</h1>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam
-            provident magni nisi quasi totam. Dicta, voluptatibus ad esse
-            laborum voluptas odio harum corrupti aspernatur facilis libero
-            reprehenderit? Ea, doloribus ab.
-          </p>
+      <div>
+        <ul className={`nav justify-content-center ${styleIndex.nav}`}>
+          <li className="nav-item">
+            <a
+              className={`nav-link ${selectedOption === "acercaDelJuego"}`}
+              href="#"
+              onClick={() => handleNavClick("acercaDelJuego")}
+            >
+              Acerca del juego
+            </a>
+          </li>
+          <li className="nav-item">
+            <a
+              className={`nav-link ${selectedOption === "categorias"}`}
+              href="#"
+              onClick={() => handleNavClick("categorias")}
+            >
+              Categorías
+            </a>
+          </li>
+        </ul>
+      </div>
+      <br />
+      {selectedOption === "acercaDelJuego" && (
+        <div className="about-game">
+          <h1>Acerca del juego</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. ...</p>
         </div>
-
-        <div id={styleIndex.scene}>
-          <div id={styleIndex.left_zone}>
-            <ul className={styleIndex.list}>
-              {Object.entries(datas).map(([index, val]) => (
-                <li className={styleIndex.item} key={index}>
-                  <input
-                    type="radio"
-                    id={`${styleIndex.radio_}${val}`}
-                    name="basic_carousel"
-                    value={val}
-                    defaultChecked={index === "tecnología"}
-                    onChange={() => {
-                      setBackgroundImage(
-                        `/images/backgroundsIndex/${index}.jpg`
-                      );
-                    }}
-                  />
-                  <label
-                    htmlFor={`${styleIndex.radio_}${val}`}
-                    className={`${styleIndex.label_}${index}`}
-                  >
-                    {index}
-                  </label>
-                  <div
-                    className={`${styleIndex.content} ${styleIndex.content_}${index} `}
-                  >
-                    <h3>{val}</h3>
-                  </div>
-                </li>
-              ))}
-            </ul>
+      )}
+      {selectedOption === "categorias" && (
+        <div className={styleIndex.body}>
+          <div style={{ textAlign: "center", padding: "0 15% 0 15%" }}>
+            <h1>Categorías</h1>
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam
+              provident magni nisi quasi totam. Dicta, voluptatibus ad esse
+              laborum voluptas odio harum corrupti aspernatur facilis libero
+              reprehenderit? Ea, doloribus ab.
+            </p>
           </div>
-          <div id={styleIndex.middle_border}></div>
-          <div id={styleIndex.right_zone}>
-            <div className={styleIndex.imageContainer}>
-              <Image
-                src={backgroundImage}
-                alt="Imagen de fondo"
-                width={330}
-                height={280}
-              />
+
+          <div id={styleIndex.scene}>
+            <div id={styleIndex.left_zone}>
+              <ul className={styleIndex.list}>
+                {Object.entries(datas).map(([index, val]) => (
+                  <li className={styleIndex.item} key={index}>
+                    <input
+                      type="radio"
+                      id={`${styleIndex.radio_}${val}`}
+                      name="basic_carousel"
+                      value={val}
+                      defaultChecked={index === "tecnología"}
+                      onChange={() => {
+                        setBackgroundImage(
+                          `/images/backgroundsIndex/${index}.jpg`
+                        );
+                      }}
+                    />
+                    <label
+                      htmlFor={`${styleIndex.radio_}${val}`}
+                      className={`${styleIndex.label_}${index}`}
+                    >
+                      {index}
+                    </label>
+                    <div
+                      className={`${styleIndex.content} ${styleIndex.content_}${index} `}
+                    >
+                      <h3>{val}</h3>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div id={styleIndex.middle_border}></div>
+            <div id={styleIndex.right_zone}>
+              <div className={styleIndex.imageContainer}>
+                <Image
+                  src={backgroundImage}
+                  alt="Imagen de fondo"
+                  width={330}
+                  height={280}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </Layout>
   );
 }
