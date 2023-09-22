@@ -176,6 +176,7 @@ const UpdateQuestion = () => {
                           value={props.values.options[index]}
                           onChange={props.handleChange}
                           onBlur={props.handleBlur}
+                          style={{ marginBottom: "10px" }}
                         />
                       </div>
                     ))}
@@ -187,56 +188,6 @@ const UpdateQuestion = () => {
                         <p>{props.errors.options}</p>
                       </div>
                     ) : null}
-                    {/* <div>
-                      <input
-                        type="text"
-                        id="options[0]"
-                        aria-label="Opciones"
-                        className="form-control"
-                        placeholder="Ingrese la opción 1."
-                        value={props.values.options[0]}
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                      />
-                      <input
-                        type="text"
-                        id="options[1]"
-                        aria-label="Opciones"
-                        className="form-control"
-                        placeholder="Ingrese la opción 2."
-                        value={props.values.options[1]}
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                      />
-                      <input
-                        type="text"
-                        id="options[2]"
-                        aria-label="Opciones"
-                        className="form-control"
-                        placeholder="Ingrese la opción 3."
-                        value={props.values.options[2]}
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                      />
-                      <input
-                        type="text"
-                        id="options[3]"
-                        aria-label="Opciones"
-                        className="form-control"
-                        placeholder="Ingrese la opción 4."
-                        value={props.values.options[3]}
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                      />
-                    </div>
-                    {props.touched.options && props.errors.options ? (
-                      <div className={styleQuestions.errorStyle}>
-                        <p className={styleQuestions.titleErrorStyle}>
-                          Error:{" "}
-                        </p>
-                        <p>{props.errors.options}</p>
-                      </div>
-                    ) : null} */}
                   </div>
                   <div className={styleQuestions.inputStyle}>
                     <span className={styleQuestions.span}>

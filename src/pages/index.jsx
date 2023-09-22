@@ -78,8 +78,40 @@ export default function Home() {
         <br />
         {selectedOption === "acercaDelJuego" && (
           <div className={styleIndex.aboutGame}>
-            <h1>Acerca del juego</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. ...</p>
+            <div className="row">
+              <div className={`col ${styleIndex.colSideLeft}`}>
+                  <Image
+                    className={styleIndex.gif1}
+                    src="/images/App_data_1.gif"
+                    alt="ANIMATION GIF"
+                    width={330}
+                    height={280}
+                  />
+              </div>
+              <div className={`col ${styleIndex.colContent}`}>
+                <h1>Acerca del juego</h1>
+                <p>
+                  MultiQuiz es un emocionante juego que desafía tus
+                  conocimientos y agilidad mental. Sumérgete en un mundo de
+                  preguntas intrigantes y respuestas rápidas mientras compites
+                  en una variedad de categorías, desde tecnología hasta cultura
+                  general. Pon a prueba tus habilidades y demuestra que eres el
+                  maestro de los trivia. Con múltiples niveles de dificultad y
+                  una amplia gama de temas, MultiQuiz te ofrece una experiencia
+                  de juego educativa y entretenida. ¡Únete a la diversión,
+                  desafía a tus amigos y conviértete en el campeón de MultiQuiz!
+                </p>
+                <div className={styleIndex.gifContainer}>
+                  <Image
+                    className={styleIndex.gif}
+                    src="/images/YOPR.gif"
+                    alt="QUESTION GIF"
+                    width={330}
+                    height={280}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         )}
         {selectedOption === "categorias" && (

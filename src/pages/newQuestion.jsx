@@ -112,6 +112,7 @@ const NewQuestion = () => {
                     value={formik.values.options[index]}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    style={{marginBottom:"10px"}}
                   />
                 </div>
               ))}

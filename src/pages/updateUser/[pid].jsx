@@ -24,9 +24,9 @@ const UpdateUser = () => {
       .email("El correo no es válido.")
       .required("El correo es requerido."),
     user_name: Yup.string().required("El nombre de usuario es requerido."),
-    password: Yup.string()
-      .min(8, "La contraseña debe tener mínimo 8 caracteres.")
-      .required("La contraseña es requerido."),
+    // password: Yup.string()
+    //   .min(8, "La contraseña debe tener mínimo 8 caracteres.")
+    //   .required("La contraseña es requerido."),
   });
 
   //Actualizar usuarios
@@ -90,7 +90,7 @@ const UpdateUser = () => {
             last_name: userUpdate.last_name || "",
             email: userUpdate.email || "",
             user_name: userUpdate.user_name || "",
-            password: userUpdate.password || "",
+            //password: userUpdate.password || "",
           }}
           onSubmit={(values) => {
             handleUpdateUsers(values);
@@ -168,7 +168,7 @@ const UpdateUser = () => {
                     <p>{props.errors.user_name}</p>
                   </div>
                 ) : null}
-                <div className="input-group" style={{ marginBottom: "10px" }}>
+                {/* <div className="input-group" style={{ marginBottom: "10px" }}>
                   <input
                     id="password"
                     type="password"
@@ -185,7 +185,7 @@ const UpdateUser = () => {
                     <p className={styleUpdateUser.titleErrorStyle}>Error</p>
                     <p>{props.errors.password}</p>
                   </div>
-                ) : null}
+                ) : null} */}
                 <div
                   style={{
                     display: "flex",
