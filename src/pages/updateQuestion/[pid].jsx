@@ -122,6 +122,7 @@ const UpdateQuestion = () => {
             hint: questionData.hint || "",
             options: questionData.options || ["", "", "", ""],
             question: questionData.question || "",
+            image: questionData.image || "",
           }}
           onSubmit={(values) => handleUpdateQuestions(values)}
         >
@@ -182,9 +183,7 @@ const UpdateQuestion = () => {
                     ))}
                     {props.touched.options && props.errors.options ? (
                       <div className={styleQuestions.errorStyle}>
-                        <p className={styleQuestions.titleErrorStyle}>
-                          Error:{" "}
-                        </p>
+                        <p className={styleQuestions.titleErrorStyle}>Error:</p>
                         <p>{props.errors.options}</p>
                       </div>
                     ) : null}

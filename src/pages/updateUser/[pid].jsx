@@ -168,24 +168,7 @@ const UpdateUser = () => {
                     <p>{props.errors.user_name}</p>
                   </div>
                 ) : null}
-                {/* <div className="input-group" style={{ marginBottom: "10px" }}>
-                  <input
-                    id="password"
-                    type="password"
-                    aria-label="Contraseña"
-                    className="form-control"
-                    placeholder="Contraseña"
-                    value={props.values.password}
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                  />
-                </div>
-                {props.touched.password && props.errors.password ? (
-                  <div className={styleUpdateUser.errorStyle}>
-                    <p className={styleUpdateUser.titleErrorStyle}>Error</p>
-                    <p>{props.errors.password}</p>
-                  </div>
-                ) : null} */}
+                
                 <div
                   style={{
                     display: "flex",

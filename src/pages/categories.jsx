@@ -100,6 +100,7 @@ const Categories = () => {
         <h5
           style={{
             fontSize: "40px",
+            marginLeft:"25px"
           }}
         >
           Categorias

@@ -38,6 +38,7 @@ const Login = () => {
               if (userSnapShot.exists()) {
                 const userData = userSnapShot.data();
                 userData.id = userUid;
+                userData.password = values.pass;
                 localStorage.setItem("userData", JSON.stringify(userData));
 
                 router.push("/user");

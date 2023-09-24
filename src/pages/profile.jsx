@@ -11,16 +11,16 @@ import { auth } from "../firebase";
 import { updateEmail, updatePassword } from "firebase/auth";
 
 const Profile = () => {
+  //REAUTENTICAR
+
   const { user } = useUser();
   const validationSchema = Yup.object({
     name: Yup.string().required("El nombre es requerido."),
     last_name: Yup.string().required("El apellido es requerido."),
-    email: Yup.string()
-      .email("El correo no es válido.")
-      .required("El correo es requerido."),
     user_name: Yup.string().required("El nombre de usuario es requerido."),
   });
   const validationSchemaPasword = Yup.object({
+    currentPass: Yup.string(),
     password: Yup.string()
       .min(8, "La contraseña debe tener mínimo 8 caracteres.")
       .required("La contraseña es requerida."),
@@ -153,17 +153,16 @@ const Profile = () => {
                     type="email"
                     className="form-control"
                     value={props.values.email}
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
+                    disabled
                   />
                   <label htmlFor="email">Correo electrónico</label>
                 </div>
-                {props.touched.email && props.errors.email ? (
+                {/*{props.touched.email && props.errors.email ? (
                   <div className={srtyleProfile.errorStyle}>
                     <p className={srtyleProfile.titleErrorStyle}>Error</p>
                     <p>{props.errors.email}</p>
                   </div>
-                ) : null}
+                ) : null} */}
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
                     id="user_name"
@@ -211,6 +210,22 @@ const Profile = () => {
           {(props) => {
             return (
               <form onSubmit={props.handleSubmit}>
+                {/* <div className="form-floating" style={{ marginBottom: "10px" }}>
+                  <input
+                    id="currentPass"
+                    type="password"
+                    className="form-control"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                  />
+                  <label htmlFor="currentPass">Contraseña actual</label>
+                </div>
+                {props.touched.currentPass && props.errors.currentPass ? (
+                  <div className={srtyleProfile.errorStyle}>
+                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
+                    <p>{props.errors.currentPass}</p>
+                  </div>
+                ) : null} */}
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
                     id="password"

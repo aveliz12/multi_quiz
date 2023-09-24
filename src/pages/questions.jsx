@@ -105,19 +105,12 @@ const Questions = () => {
       getCategorie();
       getQuestioByCategorie();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
       <div className={styleQuestions.header}>
-        <h5
-          style={{
-            fontSize: "40px",
-          }}
-        >
-          Preguntas de la categoría {categorie.name}
-        </h5>
         <Image
           src={categorie.image || "/images/spinner.png"}
           alt={categorie.name || ""}
@@ -125,6 +118,14 @@ const Questions = () => {
           height={75}
           decoding="async"
         />
+        <h5
+          style={{
+            fontSize: "40px",
+            marginLeft:"30px"
+          }}
+        >
+          Preguntas de {categorie.name}
+        </h5>
       </div>
       <div style={{ padding: "0 0 10px 15px" }}>
         <Link href="/newQuestion" className={styleQuestions.btnAdd}>

@@ -7,19 +7,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 15px 0 0;
   color: #fff;
-  background-color: #6667ab;
-  border: none;
-  border-radius: 5px;
-  height: 30px;
-  width: 20%;
-  text-decoration: none;
   font-weight: bold;
+  border-radius: 5px;
+  height: 35px;
+  width: 300px;
+  background-color: #6667ab;
+  text-decoration: none;
   &:hover {
     background-color: #341c78;
     color: #fff;
-    font-weight: bold;
   }
 }
 .questionsStyle {
@@ -42,23 +39,23 @@
     background: none;
     color: #341c78;
     font-size: 20px;
-    &:hover{
+    &:hover {
       color: #f70000;
     }
   }
-  .btnEdit{
+  .btnEdit {
     border: none;
-    background:none;
+    background: none;
     color: #341c78;
     font-size: 20px;
-    &:hover{
+    &:hover {
       color: #09ff00;
     }
   }
   .btnList {
     border: none;
     background-color: #fff;
-    font-size:19px;
+    font-size: 19px;
     .iconList {
       &:hover {
         color: #341c78;
@@ -101,19 +98,25 @@
   justify-content: space-between;
   padding-top: 15px;
   .btnSave {
-    width: 20%;
-    background-color: #6667ab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
     font-weight: bold;
-    border-radius: 3px;
+    border-radius: 5px;
+    height: 40px;
+    width: 200px;
+    background-color: #6667ab;
+    text-decoration: none;
     border: none;
     &:hover {
       background-color: #341c78;
       color: #fff;
     }
   }
-  .btnBack{
+  .btnBack {
     color: #6667ab;
-    &:hover{
+    &:hover {
       color: #341c78;
     }
   }

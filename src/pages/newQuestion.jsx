@@ -41,7 +41,7 @@ const NewQuestion = () => {
     }
   };
   //VALIDACION PARA FORMULARIO
-  console.log(categoryId)
+  console.log(categoryId);
   const formik = useFormik({
     initialValues: {
       answer: "",
@@ -49,6 +49,7 @@ const NewQuestion = () => {
       hint: "",
       options: ["", "", "", ""],
       question: "",
+      image: "",
     },
     validationSchema: Yup.object({
       question: Yup.string().required("La pregunta es requerida."),
@@ -112,7 +113,7 @@ const NewQuestion = () => {
                     value={formik.values.options[index]}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    style={{marginBottom:"10px"}}
+                    style={{ marginBottom: "10px" }}
                   />
                 </div>
               ))}
@@ -122,7 +123,6 @@ const NewQuestion = () => {
                   <p>{formik.errors.options}</p>
                 </div>
               ) : null}
-              
             </div>
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Respuesta correcta: </span>
