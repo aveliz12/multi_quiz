@@ -59,7 +59,10 @@ export default function Home() {
               <a
                 className={`nav-link ${selectedOption === "acercaDelJuego"}`}
                 href="#"
-                onClick={() => handleNavClick("acercaDelJuego")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick("acercaDelJuego");
+                }}
               >
                 Acerca del juego
               </a>
@@ -68,7 +71,10 @@ export default function Home() {
               <a
                 className={`nav-link ${selectedOption === "categorias"}`}
                 href="#"
-                onClick={() => handleNavClick("categorias")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick("categorias");
+                }}
               >
                 Categorías
               </a>
@@ -78,19 +84,18 @@ export default function Home() {
         <br />
         {selectedOption === "acercaDelJuego" && (
           <div className={styleIndex.aboutGame}>
-            <div className="row">
+            <div className={styleIndex.row}>
               <div className={`col ${styleIndex.colSideLeft}`}>
-                  <Image
-                    className={styleIndex.gif1}
-                    src="/images/App_data_1.gif"
-                    alt="ANIMATION GIF"
-                    width={330}
-                    height={280}
-                  />
+                <Image
+                  className={styleIndex.gif1}
+                  src="/images/App_data_1.gif"
+                  alt="ANIMATION GIF"
+                  width={330}
+                  height={280}
+                />
               </div>
               <div className={`col ${styleIndex.colContent}`}>
-                <h1>Acerca del juego</h1>
-                <p>
+                <h5 style={{ padding: "20px" }}>
                   MultiQuiz es un emocionante juego que desafía tus
                   conocimientos y agilidad mental. Sumérgete en un mundo de
                   preguntas intrigantes y respuestas rápidas mientras compites
@@ -100,7 +105,7 @@ export default function Home() {
                   una amplia gama de temas, MultiQuiz te ofrece una experiencia
                   de juego educativa y entretenida. ¡Únete a la diversión,
                   desafía a tus amigos y conviértete en el campeón de MultiQuiz!
-                </p>
+                </h5>
                 <div className={styleIndex.gifContainer}>
                   <Image
                     className={styleIndex.gif}
@@ -116,9 +121,8 @@ export default function Home() {
         )}
         {selectedOption === "categorias" && (
           <div className={styleIndex.body}>
-            <div style={{ textAlign: "center", padding: "0 15% 0 15%" }}>
-              <h2>Categorías</h2>
-              <p>
+            <div className={styleIndex.textStyle}>
+              <p className={styleIndex.text}>
                 Explora un mundo de conocimientos y desafíos en las diversas
                 categorías disponibles en MULTIQUIZ. Nuestras categorías abarcan
                 una amplia variedad de temas. Pon a prueba tu destreza,
