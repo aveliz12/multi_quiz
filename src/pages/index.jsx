@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import styleIndex from "../styles/index.module.scss";
 import Image from "next/image";
+import * as IconName from "react-icons/io5";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("acercaDelJuego");
@@ -100,11 +101,10 @@ export default function Home() {
                   conocimientos y agilidad mental. Sumérgete en un mundo de
                   preguntas intrigantes y respuestas rápidas mientras compites
                   en una variedad de categorías, desde tecnología hasta cultura
-                  general. Pon a prueba tus habilidades y demuestra que eres el
-                  maestro de los trivia. Con múltiples niveles de dificultad y
-                  una amplia gama de temas, MultiQuiz te ofrece una experiencia
-                  de juego educativa y entretenida. ¡Únete a la diversión,
-                  desafía a tus amigos y conviértete en el campeón de MultiQuiz!
+                  general. Con múltiples niveles de dificultad y una amplia gama
+                  de temas, MultiQuiz te ofrece una experiencia de juego
+                  educativa y entretenida. ¡Únete a la diversión, desafía a tus
+                  amigos y conviértete en el campeón de MultiQuiz!
                 </h5>
                 <div className={styleIndex.gifContainer}>
                   <Image
@@ -114,6 +114,28 @@ export default function Home() {
                     width={330}
                     height={280}
                   />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div className={styleIndex.row2}>
+              <div className="col">
+                Atrévete ya a demostrar tus conocimientos, pon a prueba tus
+                habilidades y demuestra que eres el maestro de los trivia.
+                <b>Disponible en múltiples plataformas!.</b>
+              </div>
+              <div className="col">
+                <p>Disponible en:</p>
+                <div className={styleIndex.appsDowloads}>
+                  <a href="#">
+                    Play Store
+                    <IconName.IoLogoGooglePlaystore />
+                  </a>
+                  <br />
+                  <a href="#">
+                    App Store
+                    <IconName.IoLogoAppleAppstore />
+                  </a>
                 </div>
               </div>
             </div>

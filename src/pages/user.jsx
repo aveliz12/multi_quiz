@@ -287,60 +287,72 @@ const User = () => {
                             overflowY: "auto",
                           }}
                         >
-                          {filteredRanked === "" ? (
-                            <p>Seleccione una opción</p>
-                          ) : filteredRanked.length > 0 ? (
-                            <table className="table">
-                              <thead>
-                                <tr>
-                                  <th scope="col">#</th>
-                                  <th scope="col">Tiempo</th>
-                                  <th scope="col">Respuestas Correctas</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {filteredRanked
-                                  .slice() // Copiamos la matriz para no modificar la original
-                                  .sort((a, b) => a.answer - b.answer)
-                                  .map((dataRanked, index) => {
-                                    // Convierte el timestamp a un objeto Date
-                                    const timestamp = dataRanked.time.toDate();
+                          {selectedCategory ? (
+                            filteredRanked === "" ? (
+                              <p>Seleccione una opción</p>
+                            ) : filteredRanked.length > 0 &&
+                              filteredRanked.some(
+                                (dataAnswer) => dataAnswer.correct_answer >= 6
+                              ) ? (
+                              <table className="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tiempo</th>
+                                    <th scope="col">Respuestas Correctas</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {filteredRanked
+                                    .filter(
+                                      (dataAnswer) =>
+                                        dataAnswer.correct_answer >= 6
+                                    )
+                                    .slice() // Copiamos la matriz para no modificar la original
+                                    .sort((a, b) => a.answer - b.answer)
+                                    .map((dataRanked, index) => {
+                                      // Convierte el timestamp a un objeto Date
+                                      const timestamp =
+                                        dataRanked.time.toDate();
 
-                                    // Formatea la fecha y hora como una cadena legible
-                                    const formattedDateTime =
-                                      timestamp.toLocaleString();
+                                      // Formatea la fecha y hora como una cadena legible
+                                      const formattedDateTime =
+                                        timestamp.toLocaleString();
 
-                                    const correctAnswers =
-                                      dataRanked.correct_answer;
+                                      const correctAnswers =
+                                        dataRanked.correct_answer;
 
-                                    // Establece un estilo CSS condicional para la barra de porcentaje
-                                    const percentageCellStyle = {
-                                      backgroundColor:
-                                        correctAnswers >= 7 ? "green" : "red",
-                                      width: "100%",
-                                      height: "20px",
-                                      fontWeight: "bold",
-                                      display: "flex",
-                                      justifyContent: "center",
-                                    };
+                                      // Establece un estilo CSS condicional para la barra de porcentaje
+                                      const percentageCellStyle = {
+                                        backgroundColor:
+                                          correctAnswers >= 7 ? "green" : "red",
+                                        width: "100%",
+                                        height: "20px",
+                                        fontWeight: "bold",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                      };
 
-                                    return (
-                                      <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{formattedDateTime}</td>
-                                        <td>
-                                          <div style={percentageCellStyle}>
-                                            {correctAnswers} de 10
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                              </tbody>
-                            </table>
-                          ) : (
-                            <p>No hay datos disponibles.</p>
-                          )}
+                                      return (
+                                        <tr key={index}>
+                                          <th scope="row">{index + 1}</th>
+                                          <td>{formattedDateTime}</td>
+                                          <td>
+                                            <div style={percentageCellStyle}>
+                                              {correctAnswers} de 10
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <p>
+                                No hay datos donde el puntaje sea mayor a 6.
+                              </p>
+                            )
+                          ) : null}
                         </div>
                       </Modal>
                     </div>
