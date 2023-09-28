@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import srtyleProfile from "../styles/profile.module.scss";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { auth } from "../firebase";
-import { updateEmail, updatePassword } from "firebase/auth";
+import { updateEmail, sendPasswordResetEmail } from "firebase/auth";
 
 const Profile = () => {
   //REAUTENTICAR
@@ -19,15 +19,14 @@ const Profile = () => {
     last_name: Yup.string().required("El apellido es requerido."),
     user_name: Yup.string().required("El nombre de usuario es requerido."),
   });
-  const validationSchemaPasword = Yup.object({
-    currentPass: Yup.string(),
-    password: Yup.string()
-      .min(8, "La contraseña debe tener mínimo 8 caracteres.")
-      .required("La contraseña es requerida."),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir.")
-      .required("Confirmar la contraseña es requerido."),
-  });
+  // const validationSchemaPasword = Yup.object({
+  //   password: Yup.string()
+  //     .min(8, "La contraseña debe tener mínimo 8 caracteres.")
+  //     .required("La contraseña es requerida."),
+  //   confirmPassword: Yup.string()
+  //     .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir.")
+  //     .required("Confirmar la contraseña es requerido."),
+  // });
 
   const handleUpdateProfile = async (usr) => {
     const db = getFirestore();
@@ -57,33 +56,59 @@ const Profile = () => {
       console.log(error);
     }
   };
-
-  const updatePasswordInAuth = async (newPass) => {
+  const resetPassword = async () => {
     try {
-      let newPassword = "";
-      console.log(newPass);
-      if (newPass !== null) {
-        newPassword = newPass.password;
+      if (auth.currentUser) {
+        await sendPasswordResetEmail(auth, user.email);
+        Swal.fire(
+          "Correo de restablecimiento de contraseña enviado con éxito",
+          "Por favor, revise su correo electrónico para restablecer su contraseña.",
+          "success"
+        );
+      } else {
+        // El usuario no está autenticado, muestra un mensaje de error
+        Swal.fire(
+          "Error",
+          "Debes iniciar sesión antes de restablecer la contraseña.",
+          "error"
+        );
       }
-      await updatePassword(auth.currentUser, newPassword);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Contraseña actualizada correctamente.",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     } catch (error) {
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Error al actualizar contraseña.",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      Swal.fire(
+        "Error al enviar el correo de restablecimiento de contraseña",
+        "Por favor, intente nuevamente más tarde.",
+        "error"
+      );
       console.log(error);
     }
   };
+
+  // const updatePasswordInAuth = async (newPass) => {
+  //   try {
+  //     let newPassword = "";
+  //     console.log(newPass);
+  //     if (newPass !== null) {
+  //       newPassword = newPass.password;
+  //     }
+  //     await updatePassword(auth.currentUser, newPassword);
+  //     Swal.fire({
+  //       position: "top-end",
+  //       icon: "success",
+  //       title: "Contraseña actualizada correctamente.",
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     });
+  //   } catch (error) {
+  //     Swal.fire({
+  //       position: "top-end",
+  //       icon: "error",
+  //       title: "Error al actualizar contraseña.",
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     });
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
@@ -157,12 +182,6 @@ const Profile = () => {
                   />
                   <label htmlFor="email">Correo electrónico</label>
                 </div>
-                {/*{props.touched.email && props.errors.email ? (
-                  <div className={srtyleProfile.errorStyle}>
-                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
-                    <p>{props.errors.email}</p>
-                  </div>
-                ) : null} */}
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
                     id="user_name"
@@ -180,11 +199,7 @@ const Profile = () => {
                     <p>{props.errors.user_name}</p>
                   </div>
                 ) : null}
-                <div
-                  style={{
-                    display: "flex",
-                  }}
-                >
+                <div>
                   <input
                     type="submit"
                     className={srtyleProfile.btnUpdate}
@@ -195,7 +210,14 @@ const Profile = () => {
             );
           }}
         </Formik>
-        <hr />
+        <button
+          className={srtyleProfile.linkPass}
+          onClick={() => resetPassword()}
+        >
+          Actualizar Contraseña
+        </button>
+
+        {/* <hr />
         <Formik
           validationSchema={validationSchemaPasword}
           enableReinitialize
@@ -210,22 +232,6 @@ const Profile = () => {
           {(props) => {
             return (
               <form onSubmit={props.handleSubmit}>
-                {/* <div className="form-floating" style={{ marginBottom: "10px" }}>
-                  <input
-                    id="currentPass"
-                    type="password"
-                    className="form-control"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                  />
-                  <label htmlFor="currentPass">Contraseña actual</label>
-                </div>
-                {props.touched.currentPass && props.errors.currentPass ? (
-                  <div className={srtyleProfile.errorStyle}>
-                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
-                    <p>{props.errors.currentPass}</p>
-                  </div>
-                ) : null} */}
                 <div className="form-floating" style={{ marginBottom: "10px" }}>
                   <input
                     id="password"
@@ -273,7 +279,7 @@ const Profile = () => {
               </form>
             );
           }}
-        </Formik>
+        </Formik> */}
       </div>
     </Layout>
   );

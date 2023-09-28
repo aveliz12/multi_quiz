@@ -39,13 +39,11 @@
       background-color: #6667ab;
       .header {
         display: flex;
-        justify-content: center;
-
+        align-items: center;
         .title {
+          padding: 10px 0 0 20px;
           font-size: 20px;
           font-weight: bold;
-          margin-top: 10px;
-          margin-right: 35px;
         }
         .btn {
           position: relative;
@@ -53,6 +51,7 @@
           border: none;
           color: #fff;
           font-size: 20px;
+          padding-right: 20px;
           &:hover {
             color: #ff0000;
           }

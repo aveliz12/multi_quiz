@@ -133,7 +133,7 @@ export default function Home() {
                 Disponible en múltiples plataformas!.
               </div>
               <div className="col">
-                <p
+                {/* <p
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -141,7 +141,7 @@ export default function Home() {
                   }}
                 >
                   <b>Búscalo en:</b>
-                </p>
+                </p> */}
                 <div className={styleIndex.appsDowloads}>
                   <div className={styleIndex.playStore}>
                     <Image

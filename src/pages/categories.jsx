@@ -100,7 +100,7 @@ const Categories = () => {
         <h5
           style={{
             fontSize: "40px",
-            marginLeft:"25px"
+            marginLeft: "25px",
           }}
         >
           Categorias
@@ -115,8 +115,7 @@ const Categories = () => {
           <div className="container" key={category.id}>
             <div className={styleCategories.card}>
               <div className={styleCategories.card_landing}>
-                
-                <div style={{display:"flex",justifyContent:"center"}}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <Image
                     src={category.image}
                     alt={category.name}
@@ -127,13 +126,20 @@ const Categories = () => {
                   />
                 </div>
                 <div className={styleCategories.header}>
-                  <h6 className={styleCategories.title}>{category.name}</h6>
-                  <button
-                    className={styleCategories.btn}
-                    onClick={() => handleDelete(category.id)}
+                  <div className="col">
+                    <h6 className={styleCategories.title}>{category.name}</h6>
+                  </div>
+                  <div
+                    className="col"
+                    style={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    <FaIcons.FaTrashAlt />
-                  </button>
+                    <button
+                      className={styleCategories.btn}
+                      onClick={() => handleDelete(category.id)}
+                    >
+                      <FaIcons.FaTrashAlt />
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className={styleCategories.card_info}>
