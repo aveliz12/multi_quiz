@@ -334,11 +334,20 @@ $scene-height: 400px;
   }
   .row2 {
     display: flex;
-    flex-direction: row;
-    font-size:20px;
-    .appsDowloads{
-      a{
-        text-decoration: none;
+    font-size: 20px;
+    .appsDowloads {
+      display: flex;
+      justify-content: center;
+      .playStore,
+      .appStore {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 70px 0 70px;
+        span {
+          font-weight: bold;
+          color: #4e54c8;
+        }
       }
     }
   }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import styleIndex from "../styles/index.module.scss";
 import Image from "next/image";
-import * as IconName from "react-icons/io5";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("acercaDelJuego");
@@ -119,23 +118,51 @@ export default function Home() {
             </div>
             <hr />
             <div className={styleIndex.row2}>
-              <div className="col">
+              <div
+                className="col"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft:"50px",
+                  color:"#4e54c8",
+                  fontWeight:"bold"
+                }}
+              >
                 Atrévete ya a demostrar tus conocimientos, pon a prueba tus
                 habilidades y demuestra que eres el maestro de los trivia.
-                <b>Disponible en múltiples plataformas!.</b>
+                Disponible en múltiples plataformas!.
               </div>
               <div className="col">
-                <p>Disponible en:</p>
+                <p
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    color: "#4e54c8",
+                  }}
+                >
+                  <b>Búscalo en:</b>
+                </p>
                 <div className={styleIndex.appsDowloads}>
-                  <a href="#">
-                    Play Store
-                    <IconName.IoLogoGooglePlaystore />
-                  </a>
-                  <br />
-                  <a href="#">
-                    App Store
-                    <IconName.IoLogoAppleAppstore />
-                  </a>
+                  <div className={styleIndex.playStore}>
+                    <Image
+                      src="/images/Play_Store.png"
+                      alt="Play Store"
+                      width={120}
+                      height={150}
+                      decoding="async"
+                    />
+                    <span>PLAY STORE</span>
+                  </div>
+                  <div className={styleIndex.appStore}>
+                    <Image
+                      src="/images/App_Store.png"
+                      alt="App Store"
+                      width={130}
+                      height={150}
+                      decoding="async"
+                    />
+                    <span>APP STORE</span>
+                  </div>
                 </div>
               </div>
             </div>
