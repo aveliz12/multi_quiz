@@ -1,9 +1,9 @@
 import React from "react";
-
-const Modal = ({ show, onHide, titleHead, children, btnSubmit }) => {
+import styleModal from "../styles/modal.module.scss";
+const Modal = ({ show, onHide, titleHead, children }) => {
   return (
     <div
-      className={`modal ${show ? "show d-block" : ""}`}
+      className={`modal ${show ? "show d-block" : ""} `}
       tabIndex="-1"
       role="dialog"
       style={{ display: show ? "block" : "none" }}
@@ -19,7 +19,12 @@ const Modal = ({ show, onHide, titleHead, children, btnSubmit }) => {
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body">{children}</div>
+          <div
+            className="modal-body"
+            style={{ maxHeight: "70vh", overflowY: "auto" }}
+          >
+            {children}
+          </div>
           <div className="modal-footer">
             <button
               type="button"

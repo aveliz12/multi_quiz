@@ -53,6 +53,7 @@ const Login = () => {
               title: "Oops...",
               text: "Credenciales incorrectas",
             });
+            console.log(err);
           });
       } catch (error) {
         console.log("Error al ingresar. ", error);

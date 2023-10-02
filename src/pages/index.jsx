@@ -2,9 +2,23 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import styleIndex from "../styles/index.module.scss";
 import Image from "next/image";
+import Modal from "../components/Modal";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("acercaDelJuego");
+
+  //MODAL
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleShowModal = () => {
+    setModalShow(true);
+  };
+
+  const handleHideModal = () => {
+    handleNavClick("acercaDelJuego");
+    setModalShow(false);
+  };
+
   const handleNavClick = (option) => {
     setSelectedOption(option);
   };
@@ -79,6 +93,18 @@ export default function Home() {
                 Categorías
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleShowModal();
+                }}
+              >
+                Manejo de datos
+              </a>
+            </li>
           </ul>
         </div>
         <br />
@@ -123,9 +149,9 @@ export default function Home() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginLeft:"50px",
-                  color:"#4e54c8",
-                  fontWeight:"bold"
+                  marginLeft: "50px",
+                  color: "#4e54c8",
+                  fontWeight: "bold",
                 }}
               >
                 Atrévete ya a demostrar tus conocimientos, pon a prueba tus
@@ -229,6 +255,68 @@ export default function Home() {
             <br />
           </div>
         )}
+        <Modal
+          show={modalShow}
+          onHide={handleHideModal}
+          titleHead="Manejo de datos"
+        >
+          <div className={styleIndex.colSideLeftData}>
+            <p>
+              En MULTIQUIZ, confiamos en Firebase, una plataforma de desarrollo
+              de aplicaciones respaldada por Google, para gestionar y proteger
+              tus datos de manera segura. Firebase se ha diseñado para
+              garantizar la confidencialidad, integridad y disponibilidad de tus
+              datos personales en todo momento.
+            </p>
+            <h6>Nuestra Apuesta por Firebase</h6>
+            <p>
+              Firebase es una plataforma de desarrollo de aplicaciones en la
+              nube que ofrece un conjunto completo de herramientas y servicios
+              para ayudarnos a almacenar, organizar y acceder a los datos
+              necesarios para hacer funcionar MULTIQUIZ. Algunas de las ventajas
+              más destacadas de Firebase incluyen:
+            </p>
+            <ul>
+              <li>
+                <b>Seguridad de primer nivel:</b>
+                <p>
+                  Firebase implementa sólidas medidas de seguridad como el
+                  cifrado en tránsito y en reposo, autenticación segura y
+                  controles de acceso avanzados.
+                </p>
+              </li>
+              <li>
+                <b>Bases de datos en tiempo real:</b>
+                <p>
+                  Utilizamos Firebase Realtime Database para mantener tus datos
+                  actualizados en tiempo real, lo que permite una experiencia de
+                  usuario fluida y colaborativa.
+                </p>
+              </li>
+              <li>
+                <b>Almacenamiento en la nube:</b>
+                <p>
+                  Firebase Cloud Storage nos permite almacenar y administrar
+                  archivos y recursos multimedia de forma escalable y confiable.
+                </p>
+              </li>
+              <li>
+                <b>Autenticación simplificada:</b>
+                <p>
+                  Firebase Authentication facilita el inicio de sesión y la
+                  gestión de usuarios, garantizando que tu información personal
+                  esté protegida.
+                </p>
+              </li>
+            </ul>
+            <p>
+              <b>Tu Privacidad y Tranquilidad:</b> En nombre de MULTIQUIZ, nos
+              tomamos en serio la protección de tus datos y cumplimos con todas
+              las regulaciones de privacidad aplicables. Firebase nos permite
+              ofrecerte una experiencia segura y transparente.
+            </p>
+          </div>
+        </Modal>
       </div>
       <br />
       <footer className={`footer ${styleIndex.footer}`}>
