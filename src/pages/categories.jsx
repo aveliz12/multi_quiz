@@ -117,7 +117,11 @@ const Categories = () => {
               <div className={styleCategories.card_landing}>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Image
-                    src={category.image}
+                    src={
+                      !category.image
+                        ? "/images/category_default.png"
+                        : category.image
+                    }
                     alt={category.name}
                     width={150}
                     height={200}

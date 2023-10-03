@@ -54,7 +54,7 @@ const NewAccount = () => {
           last_name: data.last_name,
           user_name: data.user_name,
           email: data.email,
-          password: data.password,
+          //password: data.password,
           role: data.role,
         });
 

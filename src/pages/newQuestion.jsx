@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import * as FaIcons from "react-icons/fa";
 import styleQuestions from "../styles/questions.module.scss";
 import { useFormik } from "formik";
@@ -9,19 +9,53 @@ import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useUser } from "@/components/UserContext";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const NewQuestion = () => {
   const { user } = useUser();
   const { categoryId } = useUser();
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const router = useRouter();
 
+  //Cargar imagen a storage
+  const uploadImageQuestion = async () => {
+    try {
+      if (!selectedImage) {
+        throw new Error("Debe seleccionar una imagen.");
+      }
+
+      const storage = getStorage();
+      const storageRef = ref(storage, `/image_questions/${selectedImage.name}`);
+      await uploadBytes(storageRef, selectedImage);
+
+      //Obtener el url de la imagen
+      const imageUrl = await getDownloadURL(storageRef);
+      return imageUrl;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const newQuestion = async (question) => {
     try {
+      let imageUrl = "";
+
+      if (selectedImage) {
+        imageUrl = await uploadImageQuestion();
+      }
+
+      const questionData = {
+        category_ref: question.category_ref,
+        question: question.question,
+        options: question.options,
+        answer: question.answer,
+        hint: question.hint,
+        image: imageUrl,
+      };
+
       const db = getFirestore();
       const questionRef = collection(db, "questions");
 
-      const newDoc = await addDoc(questionRef, question);
+      await addDoc(questionRef, questionData);
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -41,7 +75,6 @@ const NewQuestion = () => {
     }
   };
   //VALIDACION PARA FORMULARIO
-  console.log(categoryId);
   const formik = useFormik({
     initialValues: {
       answer: "",
@@ -49,7 +82,6 @@ const NewQuestion = () => {
       hint: "",
       options: ["", "", "", ""],
       question: "",
-      image: "",
     },
     validationSchema: Yup.object({
       question: Yup.string().required("La pregunta es requerida."),
@@ -67,6 +99,10 @@ const NewQuestion = () => {
       newQuestion(values);
     },
   });
+
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
       <div className="container">
@@ -165,10 +201,12 @@ const NewQuestion = () => {
             <div className={styleQuestions.inputStyle}>
               <span className={styleQuestions.span}>Imágen: </span>
               <input
-                type="text"
+                type="file"
+                id="image"
+                accept=".jpg, .jpeg, .png"
                 aria-label="Imagen"
                 className="form-control"
-                placeholder="Ingrese la url de la imagen."
+                onChange={handleImageChange}
               />
             </div>
           </div>

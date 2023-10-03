@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import React from "react";
+import React, { useState } from "react";
 import { useUser } from "@/components/UserContext";
 import styleNewCat from "../styles/categories.module.scss";
 import { useFormik } from "formik";
@@ -8,22 +8,21 @@ import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 const NewCategorie = () => {
   const { user } = useUser();
   const router = useRouter();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   //Validación del formulario
   const formik = useFormik({
     initialValues: {
       name: "",
-      image: "",
       description: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("El nombre es requerido"),
-      image: Yup.string()
-        .url("Ingrese un enlce correcto")
-        .required("El enlace de la imagen es requerido."),
       description: Yup.string().required("La descripción es requerida."),
     }),
     onSubmit: (values) => {
@@ -31,11 +30,43 @@ const NewCategorie = () => {
     },
   });
 
+  //Cargar imagen a Storage
+  const uploadImage = async () => {
+    try {
+      if (!selectedImage) {
+        throw new Error("Debe seleccionar una imagen.");
+      }
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        `/image_categories/${selectedImage.name}`
+      );
+      await uploadBytes(storageRef, selectedImage);
+
+      //Obtener la url de la imagen
+      const imageUrl = await getDownloadURL(storageRef);
+      return imageUrl;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //Nueva Categoria
   const newCategorie = async (data) => {
     try {
+      let imageUrl = "";
+
+      if (selectedImage) {
+        imageUrl = await uploadImage();
+      }
+
+      const categoryData = {
+        name: data.name,
+        image: imageUrl,
+        description: data.description,
+      };
       const db = getFirestore();
-      await addDoc(collection(db, "categories"), data);
+      await addDoc(collection(db, "categories"), categoryData);
 
       Swal.fire({
         position: "top-end",
@@ -54,7 +85,9 @@ const NewCategorie = () => {
       });
     }
   };
-
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
       <div className="container">
@@ -90,22 +123,14 @@ const NewCategorie = () => {
           <div className={styleNewCat.inputImage}>
             <span className={styleNewCat.span}>Imagen: </span>
             <input
-              type="text"
+              type="file"
               id="image"
+              accept=".jpg, .jpeg, .png"
               aria-label="Imagen"
               className="form-control"
-              placeholder="Ingrese el enlace de la imagen."
-              value={formik.values.image}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              onChange={handleImageChange}
             />
           </div>
-          {formik.touched.image && formik.errors.image ? (
-            <div className={styleNewCat.errorStyle}>
-              <p className={styleNewCat.titleErrorStyle}>Error: </p>
-              <p>{formik.errors.image}</p>
-            </div>
-          ) : null}
           <div className={styleNewCat.inputDesc}>
             <span className={styleNewCat.span}>Descripción: </span>
             <input
