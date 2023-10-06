@@ -31,7 +31,7 @@ const Modal = ({ show, onHide, titleHead, children }) => {
               className="btn btn-secondary"
               onClick={onHide}
             >
-              Close
+              Cerrar
             </button>
           </div>
         </div>

@@ -38,10 +38,16 @@ const Login = () => {
               if (userSnapShot.exists()) {
                 const userData = userSnapShot.data();
                 userData.id = userUid;
-                userData.password = values.pass;
-                localStorage.setItem("userData", JSON.stringify(userData));
-
-                router.push("/user");
+                if (userData.role === "admin") {
+                  localStorage.setItem("userData", JSON.stringify(userData));
+                  router.push("/user");
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No tienes permisos de administrador para iniciar sesión.",
+                  });
+                }
               } else {
                 console.log("El usuario no existe.");
               }
@@ -123,10 +129,10 @@ const Login = () => {
                     </div>
                   ) : null}
                 </div>
-                <div className={loginStyle.btnLogin}>
+                <div>
                   <input
                     type="submit"
-                    className="btn btn-primary"
+                    className={loginStyle.btnLogin}
                     value="INICIAR SESIÓN"
                   />
                 </div>

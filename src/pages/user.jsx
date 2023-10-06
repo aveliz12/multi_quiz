@@ -132,7 +132,12 @@ const User = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      const filterData = userData.filter((usr) => usr.id !== user?.id);
+
+      //Obtener datos de localstorage
+      const dataLSUser = localStorage.getItem("userData");
+      const parseuserData = JSON.parse(dataLSUser);
+
+      const filterData = userData.filter((usr) => usr.id !== parseuserData.id);
       setUsers(filterData);
     } catch (err) {
       console.log(err);
@@ -255,7 +260,7 @@ const User = () => {
                       <Modal
                         show={modalShow}
                         onHide={handleHideModal}
-                        titleHead="Características de juego"
+                        titleHead={`Puntaje`}
                       >
                         <select
                           className="form-select"
@@ -292,7 +297,7 @@ const User = () => {
                               <p>Seleccione una opción</p>
                             ) : filteredRanked.length > 0 &&
                               filteredRanked.some(
-                                (dataAnswer) => dataAnswer.correct_answer >= 6
+                                (dataAnswer) => dataAnswer.correct_answer >= 5
                               ) ? (
                               <table className="table">
                                 <thead>
@@ -306,7 +311,7 @@ const User = () => {
                                   {filteredRanked
                                     .filter(
                                       (dataAnswer) =>
-                                        dataAnswer.correct_answer >= 6
+                                        dataAnswer.correct_answer >= 5
                                     )
                                     .slice() // Copiamos la matriz para no modificar la original
                                     .sort((a, b) => a.answer - b.answer)
@@ -349,7 +354,7 @@ const User = () => {
                               </table>
                             ) : (
                               <p>
-                                No hay datos donde el puntaje sea mayor a 6.
+                                No hay datos donde el puntaje sea mayor a 5.
                               </p>
                             )
                           ) : null}
