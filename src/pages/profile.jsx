@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/components/Layout";
 import WithPrivateRoute from "../components/WithPrivateRoute";
 import { useUser } from "../components/UserContext";
@@ -11,22 +11,12 @@ import { auth } from "../firebase";
 import { updateEmail, sendPasswordResetEmail } from "firebase/auth";
 
 const Profile = () => {
-  //REAUTENTICAR
-
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const validationSchema = Yup.object({
     name: Yup.string().required("El nombre es requerido."),
     last_name: Yup.string().required("El apellido es requerido."),
     user_name: Yup.string().required("El nombre de usuario es requerido."),
   });
-  // const validationSchemaPasword = Yup.object({
-  //   password: Yup.string()
-  //     .min(8, "La contraseña debe tener mínimo 8 caracteres.")
-  //     .required("La contraseña es requerida."),
-  //   confirmPassword: Yup.string()
-  //     .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir.")
-  //     .required("Confirmar la contraseña es requerido."),
-  // });
 
   const handleUpdateProfile = async (usr) => {
     const db = getFirestore();
@@ -34,9 +24,9 @@ const Profile = () => {
     try {
       await updateDoc(profileRef, usr);
 
-      if (usr.email) {
-        await updateEmail(auth.currentUser, usr.email);
-      }
+      setUser({ ...user, ...usr });
+      const updateUserLocalStorage = { ...user, ...usr };
+      localStorage.setItem("userData", JSON.stringify(updateUserLocalStorage));
 
       Swal.fire({
         position: "top-end",
@@ -82,33 +72,6 @@ const Profile = () => {
       console.log(error);
     }
   };
-
-  // const updatePasswordInAuth = async (newPass) => {
-  //   try {
-  //     let newPassword = "";
-  //     console.log(newPass);
-  //     if (newPass !== null) {
-  //       newPassword = newPass.password;
-  //     }
-  //     await updatePassword(auth.currentUser, newPassword);
-  //     Swal.fire({
-  //       position: "top-end",
-  //       icon: "success",
-  //       title: "Contraseña actualizada correctamente.",
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     });
-  //   } catch (error) {
-  //     Swal.fire({
-  //       position: "top-end",
-  //       icon: "error",
-  //       title: "Error al actualizar contraseña.",
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     });
-  //     console.log(error);
-  //   }
-  // };
 
   return (
     <Layout title={`Bienvenido ${user?.name} ${user?.last_name}`}>
@@ -216,70 +179,6 @@ const Profile = () => {
         >
           Actualizar Contraseña
         </button>
-
-        {/* <hr />
-        <Formik
-          validationSchema={validationSchemaPasword}
-          enableReinitialize
-          initialValues={{
-            password: "",
-            confirmPassword: "",
-          }}
-          onSubmit={(values) => {
-            updatePasswordInAuth(values);
-          }}
-        >
-          {(props) => {
-            return (
-              <form onSubmit={props.handleSubmit}>
-                <div className="form-floating" style={{ marginBottom: "10px" }}>
-                  <input
-                    id="password"
-                    type="password"
-                    className="form-control"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                  />
-                  <label htmlFor="password">Contraseña</label>
-                </div>
-                {props.touched.password && props.errors.password ? (
-                  <div className={srtyleProfile.errorStyle}>
-                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
-                    <p>{props.errors.password}</p>
-                  </div>
-                ) : null}
-                <div className="form-floating" style={{ marginBottom: "10px" }}>
-                  <input
-                    id="confirmPassword"
-                    type="password"
-                    className="form-control"
-                    onChange={props.handleChange}
-                    onBlur={props.handleBlur}
-                  />
-                  <label htmlFor="confirmPassword">Confirmar contraseña</label>
-                </div>
-                {props.touched.confirmPassword &&
-                props.errors.confirmPassword ? (
-                  <div className={srtyleProfile.errorStyle}>
-                    <p className={srtyleProfile.titleErrorStyle}>Error</p>
-                    <p>{props.errors.confirmPassword}</p>
-                  </div>
-                ) : null}
-                <div
-                  style={{
-                    display: "flex",
-                  }}
-                >
-                  <input
-                    type="submit"
-                    className={srtyleProfile.btnUpdate}
-                    value="ACTUALIZAR CONTRASEÑA"
-                  />
-                </div>
-              </form>
-            );
-          }}
-        </Formik> */}
       </div>
     </Layout>
   );
